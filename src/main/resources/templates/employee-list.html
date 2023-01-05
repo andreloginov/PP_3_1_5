@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Employees</title>
+</head>
+<body>
+
+<div th:switch="${employees}">
+  <h2 th:case="null">No users yet!</h2>
+  <div th:case="*" >
+    <h2>Users</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Department</th>
+        <th>Salary</th>
+        <th>Operations</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="emp : ${employees}">
+        <td th:text="*{emp.id}"></td>
+        <td th:text="*{emp.name}"></td>
+        <td th:text="*{emp.surName}"></td>
+        <td th:text="*{emp.department}"></td>
+        <td th:text="*{emp.salary}"></td>
+
+        <td>
+          <button
+                th:href="@{/employee-update/{id}(id=${emp.id})}"
+                onclick="window.location.href=(this.getAttribute('href'))">Update</button>
+
+
+          <button
+            th:href = "@{/employee-delete/{id}(id=${emp.id})}"
+            onclick="window.location.href=(this.getAttribute('href'))">Delete</button>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <br>
+  <input type="button" value="Add" onclick="window.location.href='/employee-create'"/>
+</div>
+</body>
+</html>
