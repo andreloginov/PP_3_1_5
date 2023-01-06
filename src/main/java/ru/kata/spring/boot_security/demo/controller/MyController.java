@@ -11,7 +11,7 @@ import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class MyController {
     private final UserService userService;

@@ -40,6 +40,7 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
+
     private Set<Role> roles;
 
     //***********************************************

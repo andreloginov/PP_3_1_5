@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="#" th:action="@{/employee-update}" th:object="${employee}" method="post">
-  <input readonly type="hidden" th:field="*{id}" id="id" placeholder="ID">
+  <input readonly th:field="*{id}" id="id">
   <br><br>
   <label for="firstName">First name</label>
   <input type="text" th:field="*{name}" id="firstName" placeholder="Write first name">
