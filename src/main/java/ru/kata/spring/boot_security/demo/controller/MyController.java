@@ -11,9 +11,10 @@ import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
-@RequestMapping
+@RequestMapping("/admin")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class MyController {
+
     private final UserService userService;
 
     public MyController(UserService userService) {
@@ -37,7 +38,7 @@ public class MyController {
     public String deleteEmployee(@PathVariable("id") int id) {
         userService.deleteUser(id);
 
-        return "redirect:/employees";
+        return "redirect:/admin/employees";
     }
 
     @GetMapping("/employee-update/{id}")
@@ -51,6 +52,6 @@ public class MyController {
     public String updateEmployee(User user) {
         userService.saveUser(user);
 
-        return "redirect:/employees";
+        return "redirect:/admin/employees";
     }
 }
