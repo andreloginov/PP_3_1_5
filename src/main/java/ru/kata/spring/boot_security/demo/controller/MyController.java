@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,9 @@ public class MyController {
     }
 
     @GetMapping("/employees")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String showAllEmployees(Model model) {
-        model.addAttribute("employees", userService.getAllUsers());
+        model.addAttribute("employees", userService.allUsers());
 
         return "employee-list";
     }
@@ -38,7 +40,7 @@ public class MyController {
 
     @GetMapping("/employee-update/{id}")
     public String updateEmployeeForm(@PathVariable("id") int id, Model model) {
-        model.addAttribute("employee", userService.getUserById(id));
+        model.addAttribute("employee", userService.findUserById(id));
 
         return "employee-update";
     }

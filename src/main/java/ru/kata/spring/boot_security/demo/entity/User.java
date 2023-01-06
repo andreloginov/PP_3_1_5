@@ -1,91 +1,78 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "t_user")
+@Data
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "surname")
     private String surName;
+
     @Column(name = "department")
     private String department;
+
     @Column(name = "salary")
     private int salary;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    @Column(name = "password")
+    private String password;
+
+    @Transient
+    private String passwordConfirm;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
     //***********************************************
 
-
-    public User() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 
-    public User(String name, String surName, String department, int salary, Set<Role> roleCollection) {
-        this.name = name;
-        this.surName = surName;
-        this.department = department;
-        this.salary = salary;
-        this.roles = roleCollection;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
+    @Override
+    public String getUsername() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public String getSurName() {
-        return surName;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
