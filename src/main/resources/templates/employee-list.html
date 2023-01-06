@@ -18,7 +18,6 @@
         <th>Surname</th>
         <th>Department</th>
         <th>Salary</th>
-        <th>Role</th>
         <th>Operations</th>
       </tr>
       </thead>
@@ -29,8 +28,6 @@
         <td th:text="*{emp.surName}"></td>
         <td th:text="*{emp.department}"></td>
         <td th:text="*{emp.salary}"></td>
-        <td th:text="*{emp.roles}"> </td>
-
         <td>
           <button
                 th:href="@{/employee-update/{id}(id=${emp.id})}"
