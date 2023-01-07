@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -59,14 +60,27 @@ public class UserService implements UserDetailsService {
 
         BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
         User userFromDB = userRepository.findByName(user.getName());
-        if (userFromDB == null) {
+       /* if (userFromDB == null) {
             //user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
             user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
             user.setPassword(passwordEncoder1.encode(user.getPassword()));
         } else {
-            user.setPassword(userRepository.getById(user.getId()).getPassword());
-        }
+            //user.setPassword(userRepository.getById(user.getId()).getPassword());
+        }*/
 
+        // если user's id не равен null, то это обнолвение юзера
+        // тогда user's password не трогаем, он наверно не должен меняться с поля, поле же закрыто по сути
+        if (user.getId() != null) {
+            System.out.println(".");
+            System.out.println(".if user's not null.");
+            System.out.println("users id = " + user.getId() + ", var password: " + user.getPassword() + ", var passwordConfirm: " + user.getPasswordConfirm());
+            System.out.println("..");
+            System.out.println(".");
+        } else {
+            // если user's id null, то это новый user, ставим ему пароль из поля password confirm
+            user.setPassword(passwordEncoder1.encode(user.getPassword()));
+            user.setRoles(Set.of(new Role(1, "ROLE_USER")));
+        }
 
 
 

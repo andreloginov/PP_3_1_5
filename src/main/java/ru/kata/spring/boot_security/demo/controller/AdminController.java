@@ -55,17 +55,31 @@ public class AdminController {
 
     @GetMapping("/employee-update/{id}")
     public String updateEmployeeForm(@PathVariable("id") int id, Model model) {
-        model.addAttribute("employee", userService.findUserById(id));
+        User user = userService.findUserById(id);
+        System.out.println("exp");
+        System.out.println("exp");
+        System.out.println("password " + user.getPassword());
+        System.out.println("exp");
+        System.out.println("exp");
+        model.addAttribute("employee", user);
 
         return "employee-update";
     }
 
     @PostMapping("/employee-update")
     public String updateEmployee(@Valid User user, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("employee", user);
-            return "employee-update";
-        }
+
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("password = " + user.getPassword());
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+
         userService.saveUser(user);
 
         return "redirect:/admin/employees";
