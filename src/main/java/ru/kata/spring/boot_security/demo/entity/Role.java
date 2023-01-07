@@ -1,13 +1,11 @@
 package ru.kata.spring.boot_security.demo.entity;
 
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Objects;
+
 import java.util.Set;
 
-@Data
 @Entity
 @Table(name = "t_role")
 public class Role implements GrantedAuthority {
@@ -31,6 +29,11 @@ public class Role implements GrantedAuthority {
 
     }
 
+    public Role(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public String getAuthority() {
         return getName();
@@ -39,5 +42,33 @@ public class Role implements GrantedAuthority {
     @Override
     public String toString() {
         return name;
+    }
+
+    // *
+    // *** getters and setter ***
+    // *
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

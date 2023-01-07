@@ -6,24 +6,42 @@
 </head>
 <body>
 <form action="#" th:action="@{/admin/employee-update}" th:object="${employee}" method="post">
-  <input readonly th:field="*{id}" id="id">
+
+  <input type="hidden" th:field="*{id}">
   <br><br>
+
   <label for="firstName">First name</label>
   <input type="text" th:field="*{name}" id="firstName" placeholder="Write first name">
+  <form th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error.</form>
   <br><br>
+
   <label for="surName">Surname</label>
   <input type="text" th:field="*{surName}" id="surName" placeholder="Write surname">
   <br><br>
+
   <label for="department">Department</label>
   <input type="text" th:field="*{department}" id="department" placeholder="Write department">
   <br><br>
+
   <label for="salary">Salary</label>
   <input type="text" th:field="*{salary}" id="salary" placeholder="Write salary">
   <br><br>
-  <label for="password">Password</label>
-  <input type="text" th:field="*{passwordConfirm}" id="password" placeholder="Write salary">
+
+  <div th:switch="*{password}">
+    <div th:case="null">-->
+      <label for="password">Password</label>
+      <input type="password" th:field="*{password}" id="password" placeholder="Write password">
+    </div>
+    <div th:case="*"></div>
+  </div>
+
+
+
+
   <br><br>
   <input type="submit" value="Update">
 </form>
+<br><br>
+<div th:insert="footer :: copy"></div>
 </body>
 </html>

@@ -3,22 +3,31 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
-public class MyController {
+public class AdminController {
 
     private final UserService userService;
 
-    public MyController(UserService userService) {
+    public AdminController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("")
+    public String homePage() {
+        return "redirect:/admin/employees";
     }
 
     @GetMapping("/employees")
@@ -31,6 +40,9 @@ public class MyController {
     @GetMapping("/employee-create")
     public String createEmployeeForm(User employee, Model model) {
         model.addAttribute("employee", employee);
+
+            model.addAttribute("sms1", "Поле не может быть пустым");
+
 
         return "employee-update";
     }
@@ -49,7 +61,11 @@ public class MyController {
     }
 
     @PostMapping("/employee-update")
-    public String updateEmployee(User user) {
+    public String updateEmployee(@Valid User user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("employee", user);
+            return "employee-update";
+        }
         userService.saveUser(user);
 
         return "redirect:/admin/employees";

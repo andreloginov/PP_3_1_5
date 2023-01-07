@@ -25,9 +25,6 @@ public class UserController {
         User user = (User) userService.loadUserByUsername(authentication.getName());
         model.addAttribute("employees", user);
 
-        System.out.println("");
-        System.out.println("Handled by controller");
-        System.out.println("");
         return "user";
     }
 

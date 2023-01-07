@@ -2,37 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <title>Spring Security Example</title>
-    <link th:href="@{iksweb.css}" rel="stylesheet" />
+    <title>Profile</title>
 </head>
 <body>
 <h1><span sec:authentication="name"></span>, welcome spring boot security page!</h1>
 <br><br>
 
 
-<h2>Your data information</h2>
-<!--<table>
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Department</th>
-        <th>Salary</th>
-        <th>Roles</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${employees.id}"></td>
-        <td th:text="${employees.name}"></td>
-        <td th:text="${employees.surName}"></td>
-        <td th:text="${employees.department}"></td>
-        <td th:text="${employees.salary}"></td>
-        <td th:each=" role : ${employees.roles}" th:="${role.name}"></td>
-    </tr>-->
-
-
+<h2>Your profile information</h2>
 
 
 <table>
@@ -63,5 +40,9 @@
     </tr>
     </tbody>
 </table>
+
+<br><br>
+
+<div th:insert="footer :: copy"></div>
 </body>
 </html>

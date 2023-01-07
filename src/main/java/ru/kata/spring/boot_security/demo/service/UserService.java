@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
@@ -33,10 +34,13 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findByName(username);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
 
         return user;
+        /*return new org.springframework.security.core.userdetails.User(
+                user.getName(), user.getPassword(), user.getAuthorities()
+        );*/
     }
 
 
@@ -54,13 +58,20 @@ public class UserService implements UserDetailsService {
     public boolean saveUser(User user) {
 
         BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
-
-        if (user.getId() == null || user.getId() == 0) {
+        User userFromDB = userRepository.findByName(user.getName());
+        if (userFromDB == null) {
             //user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
-            user.setRoles(Collections.singleton(repository.getById(1)));
-
+            user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
+            user.setPassword(passwordEncoder1.encode(user.getPassword()));
+        } else {
+            user.setPassword(userRepository.getById(user.getId()).getPassword());
         }
-        user.setPassword(passwordEncoder1.encode(user.getPasswordConfirm()));
+
+
+
+
+
+
         userRepository.save(user);
 
         return true;
