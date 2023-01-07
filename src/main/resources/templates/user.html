@@ -1,11 +1,67 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Spring Security Example</title>
+    <link th:href="@{iksweb.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h1><span sec:authentication="name"></span>, welcome spring boot security page!</h1>
+<br><br>
 
 
+<h2>Your data information</h2>
+<!--<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Department</th>
+        <th>Salary</th>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${employees.id}"></td>
+        <td th:text="${employees.name}"></td>
+        <td th:text="${employees.surName}"></td>
+        <td th:text="${employees.department}"></td>
+        <td th:text="${employees.salary}"></td>
+        <td th:each=" role : ${employees.roles}" th:="${role.name}"></td>
+    </tr>-->
+
+
+
+
+<table>
+    <tbody>
+    <tr>
+        <td>Id: </td>
+        <td colspan="2" th:text="${employees.id}"></td>
+    </tr>
+    <tr>
+        <td>name: </td>
+        <td colspan="2" th:text="${employees.name}"></td>
+    </tr>
+    <tr>
+        <td>surname: </td>
+        <td colspan="2" th:text="${employees.surName}"></td>
+    </tr>
+    <tr>
+        <td>department: </td>
+        <td colspan="2" th:text="${employees.department}"></td>
+    </tr>
+    <tr>
+        <td>salary: </td>
+        <td colspan="2" th:text="${employees.salary}"></td>
+    </tr>
+    <tr>
+        <td>roles: </td>
+        <td th:text="${employees.toString()}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
