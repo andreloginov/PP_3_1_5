@@ -11,11 +11,9 @@ import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import javax.management.InstanceAlreadyExistsException;
 import javax.persistence.EntityManager;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -59,27 +57,26 @@ public class UserService implements UserDetailsService {
     public boolean saveUser(User user) {
 
         BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
-        User userFromDB = userRepository.findByName(user.getName());
-       /* if (userFromDB == null) {
-            //user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
-            user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
-            user.setPassword(passwordEncoder1.encode(user.getPassword()));
-        } else {
-            //user.setPassword(userRepository.getById(user.getId()).getPassword());
-        }*/
 
-        // если user's id не равен null, то это обнолвение юзера
-        // тогда user's password не трогаем, он наверно не должен меняться с поля, поле же закрыто по сути
-        if (user.getId() != null) {
-            System.out.println(".");
-            System.out.println(".if user's not null.");
-            System.out.println("users id = " + user.getId() + ", var password: " + user.getPassword() + ", var passwordConfirm: " + user.getPasswordConfirm());
-            System.out.println("..");
-            System.out.println(".");
-        } else {
+        User userFromDB = userRepository.findByName(user.getName());
+
+        // if we create a user, we check the uniqueness of the name
+        if (userFromDB != null && user.getId() == null) {
+            //throw new InstanceAlreadyExistsException("The user already exists in the database.");
+            return false;
+        }
+
             // если user's id null, то это новый user, ставим ему пароль из поля password confirm
+        if (user.getId() == null) {
             user.setPassword(passwordEncoder1.encode(user.getPassword()));
             user.setRoles(Set.of(new Role(1, "ROLE_USER")));
+        } else {
+            //update
+            Optional<User> userById = userRepository.findById(user.getId());
+            if (!userById.get().getName().equals(user.getName()) && userFromDB != null) {
+                // update user's name that is not unique
+                return false;
+            }
         }
 
 

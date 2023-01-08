@@ -33,11 +33,11 @@
       <input type="password" th:field="*{password}" id="password" placeholder="Write password">
     </div>
     <div th:case="*">
-      <label>
-        <input type="hidden" th:field="*{password}" placeholder="Write password">
-      </label>
+        <input type="hidden" th:field="*{password}">
     </div>
   </div>
+
+  <input type="hidden" th:field="*{roles}">
 
 
 
