@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.entity;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +11,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,26 +24,26 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
-    @NotNull(message = "Fuckin slave")
-    @Size(min = 2, max = 30, message = "is less then 2")
+    //@Column(name = "name")
+    @Size(min = 2, message = "must be min 2 symbols")
     private String name;
 
 
     @Column(name = "surname")
-
+    @Size(min = 2, message = "must be min 2 symbols")
     private String surName;
 
     @Column(name = "department")
-
+    @Size(min = 2, message = "must be min 3 symbols")
     private String department;
 
     @Column(name = "salary")
-
+    @Min(value = 11000)
+    @Max(value = 400000)
     private int salary;
 
     @Column(name = "password")
-
+    @Size(min = 4, max = 60)
     private String password;
 
     @Transient
@@ -174,8 +174,8 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        String some = getRoles().toString();
-        some = some.substring(1, some.length() - 1);
-        return some;
+        return "User{" +
+                "roles=" + roles +
+                '}';
     }
 }

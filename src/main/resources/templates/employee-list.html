@@ -30,7 +30,7 @@
         <td th:text="*{emp.surName}"></td>
         <td th:text="*{emp.department}"></td>
         <td th:text="*{emp.salary}"></td>
-        <td th:text="*{emp.toString()}"></td>
+        <td th:text="*{emp.roles}"></td>
         <td th:text="*{emp.password}"></td>
 
         <td>
@@ -51,6 +51,7 @@
 
   <br>
   <input type="button" value="Add" onclick="window.location.href='/admin/employee-create'"/>
+  <a th:href="@{/admin/employee-create}">Refrence</a>
   <br> <br>
 </div>
 <div th:insert="footer :: copy"></div>

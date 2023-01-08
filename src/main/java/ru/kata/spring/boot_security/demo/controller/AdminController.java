@@ -1,12 +1,17 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
@@ -20,9 +25,11 @@ import java.util.Set;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleRepository roleRepository;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("")
@@ -40,8 +47,11 @@ public class AdminController {
     @GetMapping("/employee-create")
     public String createEmployeeForm(User employee, Model model) {
         model.addAttribute("employee", employee);
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(new Role(1, "ROLE_USER"));
+        roleSet.add(new Role(2, "ROLE_ADMIN"));
+        model.addAttribute("roleSet", roleSet);
 
-            model.addAttribute("sms1", "Поле не может быть пустым");
 
 
         return "employee-update";
@@ -56,6 +66,7 @@ public class AdminController {
     @GetMapping("/employee-update/{id}")
     public String updateEmployeeForm(@PathVariable("id") int id, Model model) {
         User user = userService.findUserById(id);
+        user.setPasswordConfirm(user.getPassword());
         System.out.println("exp");
         System.out.println("exp");
         System.out.println("password " + user.getPassword());
@@ -67,20 +78,39 @@ public class AdminController {
     }
 
     @PostMapping("/employee-update")
-    public String updateEmployee(@Valid User user, BindingResult bindingResult, Model model) {
+    public String updateEmployee(@Valid @ModelAttribute("employee") User employee, BindingResult bindingResult) {
 
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println("password = " + user.getPassword());
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
+        // for an existing user
+        if (employee.getId() == null) {
+            if (bindingResult.hasErrors()) {
+                employee.setPassword(null);
 
-        userService.saveUser(user);
+                return "employee-update";
+            }
+        } else {
+
+            String userPassword = employee.getPasswordConfirm();
+
+            if (userPassword.length() < 4 && !userPassword.isBlank()) {
+                bindingResult.addError(
+                        new FieldError("employee",
+                                "passwordConfirm",
+                                "You've entered a very short pass. ")
+                );
+            }
+
+            if (bindingResult.hasErrors()) {
+
+                return "employee-update";
+            }
+
+            if (!employee.getPasswordConfirm().isBlank() && employee.getPasswordConfirm().length() > 3) {
+                employee.setPassword(employee.getPasswordConfirm());
+            }
+        }
+
+
+        userService.saveUser(employee);
 
         return "redirect:/admin/employees";
     }

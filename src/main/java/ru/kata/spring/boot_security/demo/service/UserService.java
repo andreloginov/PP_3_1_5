@@ -58,6 +58,7 @@ public class UserService implements UserDetailsService {
 
         BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
 
+
         User userFromDB = userRepository.findByName(user.getName());
 
         // if we create a user, we check the uniqueness of the name
@@ -69,7 +70,7 @@ public class UserService implements UserDetailsService {
             // если user's id null, то это новый user, ставим ему пароль из поля password confirm
         if (user.getId() == null) {
             user.setPassword(passwordEncoder1.encode(user.getPassword()));
-            user.setRoles(Set.of(new Role(1, "ROLE_USER")));
+            //user.setRoles(Set.of(new Role(1, "ROLE_USER")));
         } else {
             //update
             Optional<User> userById = userRepository.findById(user.getId());
