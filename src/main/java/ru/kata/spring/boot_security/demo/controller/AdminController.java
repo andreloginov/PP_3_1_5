@@ -46,6 +46,7 @@ public class AdminController {
 
     @GetMapping("/employee-create")
     public String createEmployeeForm(User employee, Model model) {
+
         model.addAttribute("employee", employee);
         Set<Role> roleSet = new HashSet<>();
         roleSet.add(new Role(1, "ROLE_USER"));
@@ -65,13 +66,9 @@ public class AdminController {
 
     @GetMapping("/employee-update/{id}")
     public String updateEmployeeForm(@PathVariable("id") int id, Model model) {
+
         User user = userService.findUserById(id);
         user.setPasswordConfirm(user.getPassword());
-        System.out.println("exp");
-        System.out.println("exp");
-        System.out.println("password " + user.getPassword());
-        System.out.println("exp");
-        System.out.println("exp");
         model.addAttribute("employee", user);
 
         return "employee-update";
@@ -80,7 +77,7 @@ public class AdminController {
     @PostMapping("/employee-update")
     public String updateEmployee(@Valid @ModelAttribute("employee") User employee, BindingResult bindingResult) {
 
-        // for an existing user
+        // for new user
         if (employee.getId() == null) {
             if (bindingResult.hasErrors()) {
                 employee.setPassword(null);
@@ -88,7 +85,7 @@ public class AdminController {
                 return "employee-update";
             }
         } else {
-
+            // for update
             String userPassword = employee.getPasswordConfirm();
 
             if (userPassword.length() < 4 && !userPassword.isBlank()) {

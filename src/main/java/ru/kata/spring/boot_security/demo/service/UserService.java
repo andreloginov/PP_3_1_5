@@ -58,7 +58,6 @@ public class UserService implements UserDetailsService {
 
         BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
 
-
         User userFromDB = userRepository.findByName(user.getName());
 
         // if we create a user, we check the uniqueness of the name
@@ -73,15 +72,14 @@ public class UserService implements UserDetailsService {
             //user.setRoles(Set.of(new Role(1, "ROLE_USER")));
         } else {
             //update
-            Optional<User> userById = userRepository.findById(user.getId());
-            if (!userById.get().getName().equals(user.getName()) && userFromDB != null) {
+            User userById = userRepository.findById(user.getId()).get();
+            if (!userById.getName().equals(user.getName()) && userFromDB != null) {
                 // update user's name that is not unique
                 return false;
+            } else if (!userById.getPassword().equals(user.getPassword())) {
+                user.setPassword(passwordEncoder1.encode(user.getPassword()));
             }
         }
-
-
-
 
 
         userRepository.save(user);
