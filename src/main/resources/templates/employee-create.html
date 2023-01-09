@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:form="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Update employee</title>
+</head>
+<body>
+<form action="#" th:action="@{/admin/employee-create}" th:object="${employee}" method="post" >
+
+  <input type="hidden" th:field="*{id}">
+  <br><br>
+
+  <label for="firstName">First name</label>
+  <input type="text" th:field="*{name}" id="firstName" placeholder="Write first name">
+  <span style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="error"></span>
+
+  <br><br>
+
+  <label for="surName">Surname</label>
+  <input type="text" th:field="*{surName}" id="surName" placeholder="Write surname">
+  <div style="color:red" th:if="${#fields.hasErrors('surName')}" th:errors="*{surName}" class="italic">Error</div>
+  <br><br>
+
+  <label for="department">Department</label>
+  <input type="text" th:field="*{department}" id="department" placeholder="Write department">
+  <span style="color:red" th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Error</span>
+  <br><br>
+
+  <label for="salary">Salary</label>
+  <input type="text" th:field="*{salary}" id="salary" placeholder="Write salary">
+  <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}">Error</span>
+  <br><br>
+
+
+
+
+<!--  <div th:switch="*{id}">
+    <div th:case="null">
+      <label for="password">Password</label>
+      <input type="password" th:field="*{password}" id="password" placeholder="Write password">
+      <span style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
+    </div>
+    <br>
+    <div th:case="*">-->
+      <label for="passwordConfirm">Password</label>
+      <span>Don't enter anything if your want to keep the same password.</span>
+      <input type="password" th:field="*{passwordConfirm}" id="passwordConfirm" placeholder="Change password">
+      <span style="color:red" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">Error</span>
+      <input type="hidden" th:field="*{password}">
+    </div>
+  </div>
+
+
+
+
+  <!--  <input type="hidden" th:field="*{roles}">-->
+
+
+
+
+  <br><br>
+  <input type="submit" value="Update">
+  <button type="submit">Submit</button>
+</form>
+<br><br>
+<div th:insert="footer :: copy"></div>
+</body>
+</html>

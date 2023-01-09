@@ -78,39 +78,10 @@ public class AdminController {
     @PostMapping("/employee-update")
     public String updateEmployee(@Valid @ModelAttribute("employee") User employee, BindingResult bindingResult) {
 
-        userValidator.validateForUpdateForm(employee, bindingResult);
+        userValidator.validate(employee, bindingResult);
         if (bindingResult.hasErrors()) {
             return "employee-update";
         }
-        // for new user
-      /*  if (employee.getId() == null) {
-            if (bindingResult.hasErrors()) {
-                employee.setPassword(null);
-
-                return "employee-update";
-            }
-        } else {
-            // for update
-            String userPassword = employee.getPasswordConfirm();
-
-            if (userPassword.length() < 4 && !userPassword.isBlank()) {
-                bindingResult.addError(
-                        new FieldError("employee",
-                                "passwordConfirm",
-                                "You've entered a very short pass. ")
-                );
-            }
-
-            if (bindingResult.hasErrors()) {
-
-                return "employee-update";
-            }
-
-            if (!employee.getPasswordConfirm().isBlank() && employee.getPasswordConfirm().length() > 3) {
-                employee.setPassword(employee.getPasswordConfirm());
-            }
-        }*/
-
 
         userService.saveUser(employee);
 

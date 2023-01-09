@@ -1,18 +1,19 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import javax.management.InstanceAlreadyExistsException;
 import javax.persistence.EntityManager;
 import java.util.*;
 
@@ -22,12 +23,18 @@ public class UserService implements UserDetailsService {
     private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final RoleRepository repository;
+    private ApplicationContext applicationContext;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.repository = roleRepository;
         this.entityManager = entityManager;
     }
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -44,6 +51,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+
     public User findUserById(Integer userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
         return userFromDb.orElse(new User());
@@ -56,32 +64,25 @@ public class UserService implements UserDetailsService {
 
 
     public boolean saveUser(User user) {
+        PasswordEncoder encoder = applicationContext.getBean("passwordEncoder", PasswordEncoder.class);
 
-        BCryptPasswordEncoder passwordEncoder1 = new BCryptPasswordEncoder();
-
+        //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         User userFromDB = userRepository.findByName(user.getName());
+        User userById = user.getId() == null ? null : userRepository.findById(user.getId()).get();
 
-        // if we create a user, we check the uniqueness of the name
-        if (userFromDB != null && user.getId() == null) {
-            //throw new InstanceAlreadyExistsException("The user already exists in the database.");
-            return false;
-        }
-
-            // если user's id null, то это новый user, ставим ему пароль из поля password confirm
+            // если user's id null, то это новый user, соотв-но шифруем ноый пароль
         if (user.getId() == null) {
-            user.setPassword(passwordEncoder1.encode(user.getPassword()));
+            user.setPassword(encoder.encode(user.getPassword()));
             //user.setRoles(Set.of(new Role(1, "ROLE_USER")));
+            // update pass if its different
         } else {
-            //update
-            User userById = userRepository.findById(user.getId()).get();
-            if (!userById.getName().equals(user.getName()) && userFromDB != null) {
-                // update user's name that is not unique
-                return false;
-            } else if (!userById.getPassword().equals(user.getPassword())) {
-                user.setPassword(passwordEncoder1.encode(user.getPassword()));
-            }
-        }
+            if (!Objects.requireNonNull(userById).getPassword().equals(user.getPassword())) {
+                user.setPassword(encoder.encode(user.getPassword()));
+            } else {
 
+            }
+
+        }
 
         userRepository.save(user);
 

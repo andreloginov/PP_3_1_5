@@ -29,18 +29,16 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        User user = (User) target;
+       /* User user = (User) target;
         user.setPassword(user.getPasswordConfirm());
 
         if (userService.findByName(user.getName()).isPresent()) {
             errors.rejectValue("name", "", "This name is already taken");
-        }
+        }*/
 
-    }
 
-    public void validateForUpdateForm(Object target, Errors errors) {
         User user = (User) target;
-        User userFromDB = userService.findByName(user.getName()).orElseGet(() -> null);
+        User userFromDB = userService.findByName(user.getName()).orElse(null);
 
         if (userFromDB != null && !Objects.equals(user.getId(), userFromDB.getId())) {
             errors.rejectValue("name", "", "This name is already taken");
@@ -57,12 +55,13 @@ public class UserValidator implements Validator {
             errors.rejectValue("password", "", "This password is too short. Try again!");
             // if user doesn't enter a password and has the id
             // if enter is updating
-        } else if (userPassword.isBlank() && user.getId() != null) {
-            /*user.setPassword(userPassword);*/
+        } else if (userPassword.length() > 3 && user.getId() != null) {
+            user.setPassword(userPassword);
         } else if (userPassword.length() > 3 && user.getId() == null) {
             user.setPassword(userPassword);
         }
 
 
     }
+
 }
