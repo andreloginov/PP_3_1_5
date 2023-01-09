@@ -13,43 +13,44 @@
 
   <label for="firstName">First name</label>
   <input type="text" th:field="*{name}" id="firstName" placeholder="Write first name">
-  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="error"></span>
+  <span style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="error"></span>
 
   <br><br>
 
   <label for="surName">Surname</label>
   <input type="text" th:field="*{surName}" id="surName" placeholder="Write surname">
-  <div th:if="${#fields.hasErrors('surName')}" th:errors="*{surName}" class="italic">Error</div>
+  <div style="color:red" th:if="${#fields.hasErrors('surName')}" th:errors="*{surName}" class="italic">Error</div>
   <br><br>
 
   <label for="department">Department</label>
   <input type="text" th:field="*{department}" id="department" placeholder="Write department">
-  <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Error</span>
+  <span style="color:red" th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Error</span>
   <br><br>
 
   <label for="salary">Salary</label>
   <input type="text" th:field="*{salary}" id="salary" placeholder="Write salary">
-  <span th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}">Error</span>
+  <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}">Error</span>
   <br><br>
 
 
 
 
-    <div th:switch="*{id}">
-      <div th:case="null">
+    <!--<div th:switch="*{id}">
+      <div th:case="null">-->
         <label for="password">Password</label>
-        <input type="password" th:field="*{password}" id="password" placeholder="Write password">
-        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
-      </div>
+        <input type="password" th:field="*{passwordConfirm}" id="password" placeholder="Write password">
+        <span style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
+        <input type="hidden" th:field="*{password}">
+      <!--</div>-->
       <br>
-      <div th:case="*">
+      <!--<div th:case="*">
         <label for="passwordConfirm">Password</label>
         <span>Don't enter anything if your want to keep the same password.</span>
         <input type="password" th:field="*{passwordConfirm}" id="passwordConfirm" placeholder="Change password">
-        <span th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">Error</span>
+        <span style="color:red" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">Error</span>
         <input type="hidden" th:field="*{password}">
       </div>
-    </div>
+    </div>-->
 
 
 

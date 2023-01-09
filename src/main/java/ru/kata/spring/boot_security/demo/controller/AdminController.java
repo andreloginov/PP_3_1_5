@@ -1,18 +1,17 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -26,10 +25,12 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final UserValidator userValidator;
 
-    public AdminController(UserService userService, RoleRepository roleRepository) {
+    public AdminController(UserService userService, RoleRepository roleRepository, UserValidator userValidator) {
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("")
@@ -77,8 +78,12 @@ public class AdminController {
     @PostMapping("/employee-update")
     public String updateEmployee(@Valid @ModelAttribute("employee") User employee, BindingResult bindingResult) {
 
+        userValidator.validateForUpdateForm(employee, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "employee-update";
+        }
         // for new user
-        if (employee.getId() == null) {
+      /*  if (employee.getId() == null) {
             if (bindingResult.hasErrors()) {
                 employee.setPassword(null);
 
@@ -104,7 +109,7 @@ public class AdminController {
             if (!employee.getPasswordConfirm().isBlank() && employee.getPasswordConfirm().length() > 3) {
                 employee.setPassword(employee.getPasswordConfirm());
             }
-        }
+        }*/
 
 
         userService.saveUser(employee);

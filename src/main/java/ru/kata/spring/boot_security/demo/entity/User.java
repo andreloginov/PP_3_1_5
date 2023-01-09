@@ -24,8 +24,7 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Integer id;
 
-    //@Column(name = "name")
-    @Size(min = 2, message = "must be min 2 symbols")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
 
@@ -34,7 +33,7 @@ public class User implements UserDetails {
     private String surName;
 
     @Column(name = "department")
-    @Size(min = 2, message = "must be min 3 symbols")
+    @NotBlank
     private String department;
 
     @Column(name = "salary")
@@ -43,7 +42,6 @@ public class User implements UserDetails {
     private int salary;
 
     @Column(name = "password")
-    @Size(min = 4, max = 60)
     private String password;
 
     @Transient

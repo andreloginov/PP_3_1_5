@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -98,6 +99,10 @@ public class UserService implements UserDetailsService {
     public List<User> usergtList(Integer idMin) {
         return entityManager.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
+    }
+
+    public Optional<User> findByName(String name) {
+        return Optional.ofNullable(userRepository.findByName(name));
     }
 
 }
