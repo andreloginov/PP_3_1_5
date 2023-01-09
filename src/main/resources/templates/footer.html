@@ -4,6 +4,7 @@
 <div th:fragment="copy">
   <h3>____________________________________________________</h3>
   Logged in user: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
+  <br><br>
   <form th:action="@{/logout}" method="POST">
     <input type="submit" value="Logout"/>
   </form>

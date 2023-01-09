@@ -7,32 +7,40 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_role")
+@Table(name = "role")
 public class Role implements GrantedAuthority {
 
     @Id
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Transient
-    @ManyToMany(mappedBy = "roles")
+
+    @ManyToMany()
+    @JoinTable(
+            name = "user_and_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private Set<User> users;
 
-    public Role(int i, String roleUser) {
-        this.id = i;
-        this.name = roleUser;
-    }
+
 
     public Role() {
 
     }
 
-    public Role(Integer id, String name) {
-        this.id = id;
+    public Role(String name) {
+        this();
         this.name = name;
     }
+
+    public Role(Integer id, String name) {
+        this(name);
+        this.id = id;
+    }
+
 
     @Override
     public String getAuthority() {
@@ -71,4 +79,5 @@ public class Role implements GrantedAuthority {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
 }

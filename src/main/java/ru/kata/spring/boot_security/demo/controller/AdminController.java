@@ -4,18 +4,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
+
 
 
 @Controller
@@ -49,10 +46,8 @@ public class AdminController {
     public String createEmployeeForm(User employee, Model model) {
 
         model.addAttribute("employee", employee);
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(new Role(1, "ROLE_USER"));
-        roleSet.add(new Role(2, "ROLE_ADMIN"));
-        model.addAttribute("roleSet", roleSet);
+        model.addAttribute("roleSet", roleRepository.findAll());
+
 
 
 
@@ -71,15 +66,19 @@ public class AdminController {
         User user = userService.findUserById(id);
         user.setPasswordConfirm(user.getPassword());
         model.addAttribute("employee", user);
+        model.addAttribute("roleSet", roleRepository.findAll());
 
         return "employee-update";
     }
 
     @PostMapping("/employee-update")
-    public String updateEmployee(@Valid @ModelAttribute("employee") User employee, BindingResult bindingResult) {
+    public String updateEmployee(@Valid @ModelAttribute("employee") User employee, BindingResult bindingResult, Model model) {
 
         userValidator.validate(employee, bindingResult);
         if (bindingResult.hasErrors()) {
+
+            model.addAttribute("roleSet", roleRepository.findAll());
+
             return "employee-update";
         }
 

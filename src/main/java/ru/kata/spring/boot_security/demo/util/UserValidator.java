@@ -1,23 +1,26 @@
 package ru.kata.spring.boot_security.demo.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
+
 import org.springframework.validation.Validator;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.Objects;
-import java.util.Optional;
+
 
 @Component
 public class UserValidator implements Validator {
 
     private final UserService userService;
+    private final RoleRepository repository;
 
-    public UserValidator(UserService userService) {
+
+    public UserValidator(UserService userService, RoleRepository repository) {
         this.userService = userService;
+        this.repository = repository;
     }
 
 
@@ -29,19 +32,13 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-       /* User user = (User) target;
-        user.setPassword(user.getPasswordConfirm());
-
-        if (userService.findByName(user.getName()).isPresent()) {
-            errors.rejectValue("name", "", "This name is already taken");
-        }*/
-
-
         User user = (User) target;
         User userFromDB = userService.findByName(user.getName()).orElse(null);
 
         if (userFromDB != null && !Objects.equals(user.getId(), userFromDB.getId())) {
-            errors.rejectValue("name", "", "This name is already taken");
+            errors.rejectValue("name", "", "this name is already taken");
+        } else if (user.getName().isBlank()) {
+            errors.rejectValue("name", "", "the length of the field must be at least 4 characters");
         }
 
         String userPassword = user.getPasswordConfirm();
@@ -61,7 +58,9 @@ public class UserValidator implements Validator {
             user.setPassword(userPassword);
         }
 
-
+        if (user.getRoles().isEmpty()) {
+            errors.rejectValue("roles", "", "Please select something");
+        }
     }
 
 }

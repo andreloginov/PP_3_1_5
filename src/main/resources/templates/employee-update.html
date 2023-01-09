@@ -32,30 +32,22 @@
   <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}">Error</span>
   <br><br>
 
+  <label for="password">Password</label>
+  <input type="password" th:field="*{passwordConfirm}" id="password" placeholder="Write password">
+  <span style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
+  <input type="hidden" th:field="*{password}">
+  <br><br>
 
+  <div>
+    <div th:each="role : ${roleSet}">
+      <input type="checkbox" th:field="*{roles}" th:value="${role.id}"/>
+      <label th:text="${role.name}">Something is wrong!</label>
+    </div>
+    <span style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Error</span>
 
+    </div>
+  </div>
 
-    <!--<div th:switch="*{id}">
-      <div th:case="null">-->
-        <label for="password">Password</label>
-        <input type="password" th:field="*{passwordConfirm}" id="password" placeholder="Write password">
-        <span style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
-        <input type="hidden" th:field="*{password}">
-      <!--</div>-->
-      <br>
-      <!--<div th:case="*">
-        <label for="passwordConfirm">Password</label>
-        <span>Don't enter anything if your want to keep the same password.</span>
-        <input type="password" th:field="*{passwordConfirm}" id="passwordConfirm" placeholder="Change password">
-        <span style="color:red" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">Error</span>
-        <input type="hidden" th:field="*{password}">
-      </div>
-    </div>-->
-
-
-
-
-<!--  <input type="hidden" th:field="*{roles}">-->
 
 
 
