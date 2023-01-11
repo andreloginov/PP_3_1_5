@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      lang="en">
+<body>
+<div th:fragment="copy">
+
+    <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
+        <div class="col-6">
+            <h6 class="nav-item">
+                <span sec:authentication="name"></span> with roles: <span th:text="${employees.roles}"></span>
+            </h6>
+        </div>
+        <div class="col-6 text-end">
+            <form th:action="@{/logout}" method="POST">
+                <!--<input type="submit" value="Logout"/>-->
+                <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
