@@ -3,10 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <title>Employees</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/css/bootstrap.min.css"  rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
 
+
 <div th:switch="${employees}">
+  <h2 th:case="null">No users yet!</h2>
+  <div th:case="*" >
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Surname</th>
+    <th>Department</th>
+    <th>Salary</th>
+    <th>Role(s)</th>
+    <th>Password</th>
+    <th>Operations</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th scope="row">1</th>
+    <td>Mark</td>
+    <td>Otto</td>
+  </tr>
+  <tr>
+    <th scope="row">2</th>
+    <td>Jacob</td>
+    <td>Thornton</td>
+  </tr>
+
+  <tr th:each="emp : ${employees}">
+    <th scope="row" th:text="*{emp.id}"></th>
+    <td th:text="*{emp.name}"></td>
+    <td th:text="*{emp.surName}"></td>
+    <td th:text="*{emp.department}"></td>
+    <td th:text="*{emp.salary}"></td>
+    <td th:text="*{emp.roles}"></td>
+    <td th:text="*{emp.password}"></td>
+    <td>
+      <button th:href="@{/admin/employee-update/{id}(id=${emp.id})}"
+            onclick="window.location.href=(this.getAttribute('href'))">Update</button>
+      <button th:href = "@{/admin/employee-delete/{id}(id=${emp.id})}"
+              onclick="window.location.href=(this.getAttribute('href'))">Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+  <br>
+  <input type="button" value="Add" onclick="window.location.href='/admin/employee-create'"/>
+  <br> <br>
+</div>
+
+
+<div class="container">
+  <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="@{/admin/employee-update}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Library</li>
+    </ol>
+  </nav>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!--<div th:switch="${employees}">
   <h2 th:case="null">No users yet!</h2>
   <div th:case="*" >
     <h2>Users</h2>
@@ -52,7 +126,10 @@
   <br>
   <input type="button" value="Add" onclick="window.location.href='/admin/employee-create'"/>
   <br> <br>
-</div>
+</div>-->
 <div th:insert="footer :: copy"></div>
+
+<script src="/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>

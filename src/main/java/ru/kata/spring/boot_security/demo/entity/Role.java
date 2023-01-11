@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role implements GrantedAuthority {
+
 
     @Id
     private Integer id;
