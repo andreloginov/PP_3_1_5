@@ -4,10 +4,11 @@
 <body>
 <div th:fragment="copy">
 
+
     <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
         <div class="col-6">
             <h6 class="nav-item">
-                <span sec:authentication="name"></span> with roles: <span th:text="${employees.roles}"></span>
+                <span  sec:authentication="name"></span> with roles: <span th:text="${employees.roles}"></span>
             </h6>
         </div>
         <div class="col-6 text-end">

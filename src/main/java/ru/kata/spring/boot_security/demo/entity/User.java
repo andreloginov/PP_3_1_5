@@ -173,8 +173,9 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
-                "roles=" + roles +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        roles.forEach(role -> stringBuilder.append(role.getName()).append(" ,"));
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1 );
+        return stringBuilder.toString();
     }
 }

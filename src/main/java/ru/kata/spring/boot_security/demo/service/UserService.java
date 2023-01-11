@@ -17,12 +17,13 @@ import java.util.*;
 @Service
 public class UserService implements UserDetailsService {
 
-    /*private final EntityManager entityManager;*/
+    private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final RoleRepository repository;
     private final ApplicationContext applicationContext;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, ApplicationContext applicationContext) {
+    public UserService(EntityManager entityManager, UserRepository userRepository, RoleRepository roleRepository, ApplicationContext applicationContext) {
+        this.entityManager = entityManager;
         this.userRepository = userRepository;
         this.repository = roleRepository;
         this.applicationContext = applicationContext;
