@@ -174,8 +174,8 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        roles.forEach(role -> stringBuilder.append(role.getName()).append(" ,"));
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1 );
+        roles.forEach(role -> stringBuilder.append(role.getName()).append(", "));
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
         return stringBuilder.toString();
     }
 }

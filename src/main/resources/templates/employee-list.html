@@ -12,79 +12,24 @@
 <body>
 
 
-
 <!-- ******************************************************************************************************* -->
 <header>
-<div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
-    <div class="col-6">
-        <h6 class="nav-item">
-            <b sec:authentication="name"></b> <b>with roles</b>: <span th:text="${#authorization.authentication.getAuthorities()}"></span>
+    <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
+        <div class="col-6">
+            <h6 class="nav-item">
+                <b sec:authentication="name"></b> with roles: <span
+                    th:text="${#authorization.authentication.getAuthorities()}"></span>
+            </h6>
 
-        </h6>
+        </div>
+        <div class="col-6 text-end">
+            <form th:action="@{/logout}" method="POST">
+                <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
+            </form>
+        </div>
     </div>
-    <div class="col-6 text-end">
-        <form th:action="@{/logout}" method="POST">
-            <!--<input type="submit" value="Logout"/>-->
-            <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
-        </form>
-    </div>
-</div>
 </header>
 <!-- ******************************************************************************************************* -->
-
-
-<!--<div th:switch="${employees}">
-    <h2 th:case="null">No users yet!</h2>
-    <div th:case="*">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Department</th>
-                <th>Salary</th>
-                <th>Role(s)</th>
-                <th>Password</th>
-                <th>Operations</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-            </tr>
-
-            <tr th:each="emp : ${employees}">
-                <th scope="row" th:text="*{emp.id}"></th>
-                <td th:text="*{emp.name}"></td>
-                <td th:text="*{emp.surName}"></td>
-                <td th:text="*{emp.department}"></td>
-                <td th:text="*{emp.salary}"></td>
-                <td th:text="*{emp.roles}"></td>
-                <td th:text="*{emp.password}"></td>
-                <td>
-                    <button th:href="@{/admin/employee-update/{id}(id=${emp.id})}"
-                            onclick="window.location.href=(this.getAttribute('href'))">Update
-                    </button>
-                    <button th:href="@{/admin/employee-delete/{id}(id=${emp.id})}"
-                            onclick="window.location.href=(this.getAttribute('href'))">Delete
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <input type="button" value="Add" onclick="window.location.href='/admin/employee-create'"/>
-    <br> <br>
-</div>-->
 
 
 <!-- ******************************************************************************************************* -->
@@ -99,29 +44,35 @@
     <div class="container-fluid" style="height: 850px">
         <div class="row bg-light" style="height: 100%">
             <div class="col-2  bg-body px-0 pt-3">
-                <div class="d-grid">
-                    <!--<button type="button" class="btn btn-primary text-start"
-                            style="border-radius: 2px" onclick=window.location.href='/user'>
-                        User
-                    </button>-->
-                    <ul class="nav nav-pills">
-                        <li class="nav-item mb-2">
-                            <a class="nav-link"  href="/user">Активная</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/admin/employees">Ссылка</a>
-                        </li>
-                    </ul>
+                <div class="nav nav-pills flex-column">
+                    <a class="nav-link active" aria-current="page" href="#">Admin</a>
+                    <a class="nav-link" href="/user">User</a>
                 </div>
             </div>
-
+            <!--the global container for admin panel -->
             <div class="col-md-10 px-4 pt-3 bg-light">
+                <div class="col-12">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
                 <!-- the follow column is for table-->
                 <div class="col-12">
-                    <h4>User information page</h4>
+                    <h4>Admin panel</h4>
                 </div>
                 <div class="col-12 bg-light border border-bottom-0">
-                    <h6 class="ps-3 py-2 m-0 first-table">About user</h6>
+                    <h6 class="ps-3 py-2 m-0 first-table">All users</h6>
                 </div>
                 <div class="col-12 bg-body border px-3 pb-3">
 
@@ -130,17 +81,18 @@
                         <div th:case="*">
                             <table class="table caption-top table-striped table-hover bg-body table-borderless border-top">
                                 <caption></caption>
-                              <thead>
-                              <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Department</th>
-                                <th scope="col">Salary</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Function</th>
-                              </tr>
-                              </thead>
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">Salary</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                                </thead>
 
                                 <tbody>
 
@@ -155,6 +107,8 @@
                                         <button th:href="@{/admin/employee-update/{id}(id=${emp.id})}"
                                                 onclick="window.location.href=(this.getAttribute('href'))">Update
                                         </button>
+                                    </td>
+                                    <td>
                                         <button th:href="@{/admin/employee-delete/{id}(id=${emp.id})}"
                                                 onclick="window.location.href=(this.getAttribute('href'))">Delete
                                         </button>
