@@ -37,6 +37,7 @@ public class AdminController {
 
     @GetMapping("/employees")
     public String showAllEmployees(Model model) {
+        model.addAttribute("employee", new User());
         model.addAttribute("employees", userService.allUsers());
 
         return "employee-list";
