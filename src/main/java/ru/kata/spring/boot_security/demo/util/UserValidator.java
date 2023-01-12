@@ -58,7 +58,7 @@ public class UserValidator implements Validator {
             user.setPassword(userPassword);
         }
 
-        if (user.getRoles().isEmpty()) {
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
             errors.rejectValue("roles", "", "Please select something");
         }
     }

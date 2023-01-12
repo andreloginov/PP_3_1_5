@@ -39,6 +39,7 @@ public class AdminController {
     public String showAllEmployees(Model model) {
         model.addAttribute("employee", new User());
         model.addAttribute("employees", userService.allUsers());
+        model.addAttribute("roleSet", roleRepository.findAll());
 
         return "employee-list";
     }

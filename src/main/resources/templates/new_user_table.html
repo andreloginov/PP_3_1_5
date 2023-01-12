@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      lang="en">
+<body>
+<div th:fragment="copy">
+
+
+    <div class="col-12 bg-light border border-bottom-0 py-3">
+        <h5 class="ps-3 m-0 first-table">Add new user</h5>
+    </div>
+    <!--the wrapper div for form controls-->
+    <div class="col-12 bg-body border px-3 py-3">
+
+        <div class="col-4 offset-4 px-3">
+
+            <form class="text-center fw-bold" th:object="${employee}" th:action="@{/admin/employee-update}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label">First name</label>
+                    <input type="text" class="form-control" id="FirstName" th:field="*{name}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="LastName" class="form-label">Last name</label>
+                    <input type="text" class="form-control" id="LastName" th:field="*{surName}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" th:field="*{salary}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" th:field="*{department}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" th:field="*{passwordConfirm}">
+                    <input type="hidden" th:field="*{password}">
+                </div>
+
+                <label for="role" class="form-label">Role</label>
+                <select class="form-select mb-3" size="${roleSet.}" multiple aria-label="multiple select example" id="role" th:field="*{roles}">
+                    <option th:each="role : ${roleSet}"
+                            th:value="${role.id}"
+                            th:text="${role.name}">
+                    </option>
+                </select>
+
+                <!--<select class="form-control" name="Role" id="role" th:field="*{roles}">
+                    <option value="0">ALL</option>
+                    <option th:each="role : ${roleSet}"
+                            th:value="${role.id}"
+                            th:text="${role.name}">
+                    </option>
+                </select>-->
+
+
+
+
+               <!-- <label for="role" class="form-label">Role</label>
+                <select class="form-select mb-3" size="2" multiple aria-label="multiple select example" id="role">
+                    <option th:field="*{roles}" value="2">ADMIN</option>
+                    <option th:field="*{roles}" value="1">USER</option>
+                </select>-->
+                <!--<div>
+                    <div th:each="role : ${roleSet}">
+                        <input type="radio" th:field="*{roles}" th:value="${role.id}"/>
+                        <label th:text="${role.name}">Something is wrong!</label>
+                    </div>
+                    <span style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Error</span>
+                </div>
+
+
+-->
+                <!--<label for="role1" class="form-label">Role</label>
+                <select class="form-select mb-3" size="2" multiple aria-label="multiple select example" id="role1" >
+                    <option th:each="role : ${roleSet}" th:field="*{roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                </select>
+-->
+
+                <!--<label for="role1" class="form-label">Role</label>
+                <select class="form-select mb-3" size="2" multiple aria-label="multiple select example" id="role1" >
+                        <option th:each="role : ${roleSet}" th:field="*{roles}" th:value="${role.id}" th:text="${role.name}"></option>
+
+                </select>-->
+
+                <!--<div>
+                    <div th:each="role : ${roleSet}">
+                        <input type="radio" th:field="*{roles}" th:value="${role.id}"/>
+                        <label th:text="${role.name}">Something is wrong!</label>
+                    </div>
+                    <span style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Error</span>
+                </div>-->
+
+
+                <button type="submit" class="btn btn-success">Add new user</button>
+            </form>
+        </div>
+
+    </div>
+    <!--the end of wrapper div tags which is above-->
+
+</div>
+</body>
+</html>
