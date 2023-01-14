@@ -3,19 +3,18 @@
       lang="en" >
 <body>
 <div th:fragment="copy">
-    <div class="row text-bg-dark pt-2 m-0" style="color: papayawhip">
-        <div class="col-6 align-text-bottom">
-            <blockquote class="blockquote nav-item align-text-bottom">
-                <p class="bottom-100"><strong sec:authentication="name"></strong> with roles:
+    <div class="row text-bg-dark pt-3 m-0 align-items-end " style="color: papayawhip">
+        <div class="col-6 text-start">
+            <blockquote class="blockquote nav-item m-0 pb-3">
+                <strong sec:authentication="name"></strong> with roles:
                     <span sec:authorize="hasRole('ROLE_ADMIN')">ADMIN </span>
-                    <span sec:authorize="hasRole('ROLE_USER')">USER</span></p>
-        </blockquote>
-
+                    <span sec:authorize="hasRole('ROLE_USER')">USER</span>
+            </blockquote>
         </div>
-        <div class="col-6 text-end align-text-bottom">
-            <form th:action="@{/logout}" method="POST">
-                <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
-            </form>
+        <div class="col-6 text-end">
+            <div class="pb-3">
+                <a href="/logout" style="text-decoration:none;color: gray">Logout</a>
+            </div>
         </div>
     </div>
 </div>
