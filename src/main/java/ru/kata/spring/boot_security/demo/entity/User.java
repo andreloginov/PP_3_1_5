@@ -21,6 +21,8 @@ public class User implements UserDetails {
     private Integer id;
 
     @Column(name = "name", unique = true, nullable = false)
+    @NotBlank
+    @NotEmpty
     private String name;
 
 
@@ -29,7 +31,7 @@ public class User implements UserDetails {
     private String surName;
 
     @Column(name = "email")
-    @NotBlank
+    @Email
     private String email;
 
     @Column(name = "age")
@@ -49,6 +51,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @Fetch(FetchMode.JOIN)
+    @NotNull
     private Set<Role> roles;
 
     public User() {

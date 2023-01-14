@@ -88,9 +88,9 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("roleSet", roleRepository.findAll());
-            model.addAttribute("employees", userService.findUserById(1));
+            model.addAttribute("employees", userService.allUsers());
 
-            return "all_users_table";
+            return "employee-list";
         }
 
         userService.saveUser(employee);
