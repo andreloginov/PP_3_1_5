@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-       xmlns:class="http://www.w3.org/1999/xhtml">
+      xmlns:class="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" >
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,19 +12,12 @@
 
 
 
-<!-- **********************************************th:text="${#authorization.authentication.getAuthorities()}"********************************************************* -->
+<!--xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" **********************************************th:text="${#authorization.authentication.getAuthorities()}"********************************************************* -->
 <header>
     <div th:insert="header :: copy"></div>
 </header>
 <!-- ******************************************************************************************************* -->
 
-
-<!-- ******************************************************************************************************* -->
-<!-- ********************************************* Nav bar ************************************************* -->
-
-
-<!-- ******************************************************************************************************* -->
-<!-- ******************************************************************************************************* -->
 
 
 <main>
@@ -38,8 +31,8 @@
             </div>
             <!--the global container for admin panel -->
             <div class="col-md-10 px-4 pt-3 bg-light">
-                <div class="col-12">
-                    <h4>Admin panel</h4>
+                <div class="col-12 pb-2">
+                    <h1>Admin panel</h1>
                 </div>
                 <div class="col-12">
                     <nav class="nav nav-tabs" id="nav-tab" role="tablist">

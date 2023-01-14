@@ -14,7 +14,7 @@
             <h2 th:case="null">No users yet!</h2>
             <div th:case="*" th:with="userId=2">
                 <table class="table caption-top table-striped table-hover bg-body table-borderless border-top">
-                    <caption></caption>
+                    <caption class="p-0"></caption>
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -55,8 +55,8 @@
 
         <div th:each="employee : ${employees}">
 
-            <div th:insert="modal_update_user :: copy"></div>
-            <div th:insert="modal_delete_user :: copy"></div>
+            <div th:insert="modals/modal_update_user :: copy"></div>
+            <div th:insert="modals/modal_delete_user :: copy"></div>
         </div>
     </div>
 </div>
