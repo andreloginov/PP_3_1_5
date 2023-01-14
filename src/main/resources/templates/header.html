@@ -8,7 +8,7 @@
     <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
         <div class="col-6">
             <h6 class="nav-item">
-                <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and}"
+                <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
                 <span  sec:authentication="name"></span> with roles: <span th:text="${employees.roles}"></span>
             </h6>
         </div>

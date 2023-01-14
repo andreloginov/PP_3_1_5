@@ -1,61 +1,152 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       lang="en">
 <body>
 <div th:fragment="copy">
 
 
-  <div class="col-12 bg-light border border-bottom-0 py-3">
-    <h5 class="ps-3 m-0 first-table">All users</h5>
-  </div>
-  <div class="col-12 bg-body border px-3 py-3">
-
-    <div th:switch="${employees}">
-      <h2 th:case="null">No users yet!</h2>
-      <div th:case="*">
-        <table class="table caption-top table-striped table-hover bg-body table-borderless border-top">
-          <caption></caption>
-          <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Department</th>
-            <th scope="col">Salary</th>
-            <th scope="col">Role</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-          </tr>
-          </thead>
-
-          <tbody>
-
-          <tr th:each="emp : ${employees}">
-            <td th:text="*{emp.id}"></td>
-            <td th:text="*{emp.name}"></td>
-            <td th:text="*{emp.surName}"></td>
-            <td th:text="*{emp.department}"></td>
-            <td th:text="*{emp.salary}"></td>
-            <td th:text="*{emp.toString()}"></td>
-            <td>
-              <button class="btn btn-info" th:href="@{/admin/employee-update/{id}(id=${emp.id})}"
-                      onclick="window.location.href=(this.getAttribute('href'))">Edit
-              </button>
-            </td>
-            <td>
-              <button class="btn btn-danger" th:href="@{/admin/employee-delete/{id}(id=${emp.id})}"
-                      onclick="window.location.href=(this.getAttribute('href'))">Delete
-              </button>
-            </td>
-          </tr>
-
-
-          </tbody>
-        </table>
-      </div>
+    <div class="col-12 bg-light border border-bottom-0 py-3">
+        <h5 class="ps-3 m-0 first-table">All users</h5>
     </div>
-  </div>
+    <div class="col-12 bg-body border px-3 py-3">
 
+        <div th:switch="${employees}">
+            <h2 th:case="null">No users yet!</h2>
+            <div th:case="*" th:with="userId=2">
+                <table class="table caption-top table-striped table-hover bg-body table-borderless border-top">
+                    <caption></caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="emp : ${employees}">
+                        <td th:text="*{emp.id}"></td>
+                        <td th:text="*{emp.name}"></td>
+                        <td th:text="*{emp.surName}"></td>
+                        <td th:text="*{emp.email}"></td>
+                        <td th:text="*{emp.age}"></td>
+                        <td th:text="*{emp.getPureRoles()}"></td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-th-rows="${emp}"
+                                    th:attr="data-bs-target=${'#'+emp.id}"> Edit
+                            </button>
+
+                            <!-------------------------------------------------------------------------------------------------------------------->
+                            <!-------------------------------------------------------------------------------------------------------------------->
+                            <!-- Modal -->
+                            <!-------------------------------------------------------------------------------------------------------------------->
+                            <!-------------------------------------------------------------------------------------------------------------------->
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" th:href="@{/admin/employee-delete/{id}(id=${emp.id})}"
+                                    onclick="window.location.href=(this.getAttribute('href'))">Delete
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-------------------------------------------------------------------------------------------------------------------->
+                <!-------------------------------------------------------------------------------------------------------------------->
+                <!-- Modal -->
+
+                <!-------------------------------------------------------------------------------------------------------------------->
+                <!-------------------th:attr="id=${employee.getId()}"------------------------------------------------------------------------------------------------->
+            </div>
+        </div>
+
+        <div th:each="employee : ${employees}">
+            <p th:text="*{employee.getId()}"></p>
+
+            <div class="modal fade" th:attr="id=${employee.id}" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form class="text-center fw-bold" th:object="${employee}" th:action="@{/admin/employee-update}"
+                              th:method="PATCH" th:id="${employee.id}">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="e">Modal title</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="idEditUser"><strong>ID</strong></label>
+                                    <input class="form-control" type="number" readonly th:value="${employee.id}" name="id" id="idEditUser" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nameEditUser" class="form-label">First name</label>
+                                    <input class="form-control" type="text" th:value="${employee.name}" name="name" id="nameEditUser">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="surNameEditUser" class="form-label">Last name</label>
+                                    <input type="text" class="form-control" id="surNameEditUser" th:value="${employee.surName}" name="surName">
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="ageEditUser" class="form-label">Age</label>
+                                    <input type="number" class="form-control" id="ageEditUser" th:value="${employee.age}" name="age">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="emailEditUser" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="emailEditUser" th:value="*{email}" name="email">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="passwordConfirmEditUser" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="passwordConfirmEditUser"
+                                           th:value="${employee.passwordConfirm}" name="passwordConfirm">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="passwordEditUser" class="form-label">Password should be hidden</label>
+                                    <input type="text" class="form-control" readonly th:value="*{password}" id="passwordEditUser" name="password">
+                                </div>
+
+                                <label for="roleEditUser" class="form-label">Role</label>
+                                <!--<select class="form-select mb-3" multiple aria-label="multiple select example"
+                                        id="roleEditUser" th:value="${employee.roles}" name="roles">
+                                    <option th:each="role : ${roleSet}"
+                                            th:value="${role.name}"
+                                            th:text="${role.id}"
+                                            th:selected="${employee.roles}">
+                                    </option>
+                                </select>-->
+                                <select class="form-select mb-3" size="2" aria-label="size 2 select example"
+                                        id="roleEditUser" th:value="${employee.roles}" name="roles">
+                                    <option th:each="role : ${roleSet}"
+                                            th:value="${role.id}"
+                                            th:text="${role.name}">
+                                    </option>
+
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <!--<button type="button" class="btn btn-primary" th:href="@{/admin/employee-update}" th:method="post">Save changes</button>-->
+                                <button type="submit" class="btn btn-primary" >Add
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

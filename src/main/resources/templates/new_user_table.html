@@ -27,12 +27,12 @@
 
                 <div class="mb-3">
                     <label for="age" class="form-label">Age</label>
-                    <input type="number" class="form-control" id="age" th:field="*{salary}">
+                    <input type="number" class="form-control" id="age" th:field="*{age}">
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" th:field="*{department}">
+                    <input type="email" class="form-control" id="email" th:field="*{email}">
                 </div>
 
                 <div class="mb-3">
@@ -42,7 +42,7 @@
                 </div>
 
                 <label for="role" class="form-label">Role</label>
-                <select class="form-select mb-3" size="${roleSet.}" multiple aria-label="multiple select example" id="role" th:field="*{roles}">
+                <select class="form-select mb-3" size="${roleSet}" multiple aria-label="multiple select example" id="role" th:field="*{roles}">
                     <option th:each="role : ${roleSet}"
                             th:value="${role.id}"
                             th:text="${role.name}">

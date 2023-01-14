@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<div th:each="employee : ${employee}">
 <form action="#" th:action="@{/admin/employee-update}" th:object="${employee}" method="post">
 
     <input type="hidden" th:field="*{id}">
@@ -27,13 +28,13 @@
     <br><br>
 
     <label for="department">Department</label>
-    <input type="text" th:field="*{department}" id="department" placeholder="Write department">
-    <span style="color:red" th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Error</span>
+    <input type="text" th:field="*{email}" id="department" placeholder="Write department">
+    <span style="color:red" th:if="${#fields.hasErrors('department')}" th:errors="*{email}">Error</span>
     <br><br>
 
     <label for="salary">Salary</label>
-    <input type="text" th:field="*{salary}" id="salary" placeholder="Write salary">
-    <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}">Error</span>
+    <input type="text" th:field="*{age}" id="salary" placeholder="Write salary">
+    <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{age}">Error</span>
     <br><br>
 
     <label for="password">Password</label>
@@ -129,6 +130,7 @@
     <input type="submit" value="Update">
     <button type="submit">Submit</button>
 </form>
+</div>
 
 
 <br><br>

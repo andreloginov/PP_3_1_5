@@ -12,7 +12,8 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 import javax.validation.Valid;
-
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -33,6 +34,13 @@ public class AdminController {
     @GetMapping("")
     public String homePage() {
         return "redirect:/admin/employees";
+    }
+
+    @GetMapping("/")
+    public String needToDelete(Model model) {
+        List<User> list = userService.allUsers();
+        model.addAttribute("employees", list);
+        return "all_users_table";
     }
 
     @GetMapping("/employees")
@@ -80,8 +88,9 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("roleSet", roleRepository.findAll());
+            model.addAttribute("employees", userService.findUserById(1));
 
-            return "employee-update";
+            return "all_users_table";
         }
 
         userService.saveUser(employee);

@@ -28,14 +28,13 @@ public class User implements UserDetails {
     @Size(min = 2, message = "must be min 2 symbols")
     private String surName;
 
-    @Column(name = "department")
+    @Column(name = "email")
     @NotBlank
-    private String department;
+    private String email;
 
-    @Column(name = "salary")
-    @Min(value = 11000)
-    @Max(value = 400000)
-    private int salary;
+    @Column(name = "age")
+    @Max(value = 110)
+    private int age;
 
     @Column(name = "password")
     private String password;
@@ -135,20 +134,20 @@ public class User implements UserDetails {
         this.surName = surName;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setEmail(String department) {
+        this.email = department;
     }
 
-    public int getSalary() {
-        return salary;
+    public int getAge() {
+        return age;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setAge(int salary) {
+        this.age = salary;
     }
 
     public void setPassword(String password) {
@@ -171,10 +170,12 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
+    // using to display formatted roles (like USER, ADMIN) without a prefix ROLE_
+    public String getPureRoles() {
         StringBuilder stringBuilder = new StringBuilder();
-        roles.forEach(role -> stringBuilder.append(role.getName()).append(", "));
+        String subStringToDelete = "ROLE_";
+        roles.forEach(role -> stringBuilder.append(role.getName().substring(subStringToDelete.length())).append(", "));
+        /*roles.forEach(role -> stringBuilder.append(role.getName()).append(", "));*/
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
         return stringBuilder.toString();
     }
