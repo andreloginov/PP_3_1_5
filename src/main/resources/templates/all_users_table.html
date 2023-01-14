@@ -50,16 +50,10 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-th-rows="${emp}"
                                     th:attr="data-bs-target=${'#'+emp.id}"> Edit
                             </button>
-
-                            <!-------------------------------------------------------------------------------------------------------------------->
-                            <!-------------------------------------------------------------------------------------------------------------------->
-                            <!-- Modal -->
-                            <!-------------------------------------------------------------------------------------------------------------------->
-                            <!-------------------------------------------------------------------------------------------------------------------->
                         </td>
                         <td>
-                            <button class="btn btn-danger" th:href="@{/admin/employee-delete/{id}(id=${emp.id})}"
-                                    onclick="window.location.href=(this.getAttribute('href'))">Delete
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-th-rows="${emp}"
+                                    th:attr="data-bs-target=${'#delete'+emp.id}"> Delete
                             </button>
                         </td>
                     </tr>
@@ -77,6 +71,7 @@
         <div th:each="employee : ${employees}">
 
             <div th:insert="modal_update_user :: copy"></div>
+            <div th:insert="modal_delete_user :: copy"></div>
         </div>
     </div>
 </div>
