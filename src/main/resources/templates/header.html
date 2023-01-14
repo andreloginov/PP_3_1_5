@@ -1,26 +1,40 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
-      lang="en">
+      lang="en" >
 <body>
 <div th:fragment="copy">
-
-
-    <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
+    <!--<div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
         <div class="col-6">
             <h6 class="nav-item">
-                <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-                <span  sec:authentication="name"></span> with roles: <span th:text="${employees.roles}"></span>
+                &lt;!&ndash;<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <span sec:authentication="name"></span> with roles: <span th:text="${employees.roles}"></span>
+                </div>&ndash;&gt;
+                <span sec:authorize="hasRole('ROLE_ADMIN')">Admin</span>
+                <span sec:authorize="hasRole('ROLE_USER')">User</span>
             </h6>
         </div>
         <div class="col-6 text-end">
             <form th:action="@{/logout}" method="POST">
-                <!--<input type="submit" value="Logout"/>-->
+                &lt;!&ndash;<input type="submit" value="Logout"/>&ndash;&gt;
+                <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
+            </form>
+        </div>
+    </div>-->
+    <div class="row text-bg-dark pt-2 m-0" style="color: papayawhip">
+        <div class="col-6">
+            <h6 class="nav-item">
+                <b sec:authentication="name"></b> with roles:
+                <span sec:authorize="hasRole('ROLE_ADMIN')">ADMIN </span>
+                <span sec:authorize="hasRole('ROLE_USER')">USER</span>
+            </h6>
+
+        </div>
+        <div class="col-6 text-end">
+            <form th:action="@{/logout}" method="POST">
                 <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
             </form>
         </div>
     </div>
-
 </div>
-
 </body>
 </html>

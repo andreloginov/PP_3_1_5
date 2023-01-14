@@ -32,7 +32,9 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+        int minLengthPassword = 4;
         User user = (User) target;
+        String userPassword = user.getPasswordConfirm();
         User userFromDB = userService.findByName(user.getName()).orElse(null);
 
         if (userFromDB != null && !Objects.equals(user.getId(), userFromDB.getId())) {
@@ -41,10 +43,11 @@ public class UserValidator implements Validator {
             errors.rejectValue("name", "", "the length of the field must be at least 4 characters");
         }
 
-        String userPassword = user.getPasswordConfirm();
+
         // if user's pass is more than 4 but not empty and id is not null
         // test on validate new user's password
-        if (userPassword.length() < 4 && !userPassword.isBlank() && user.getId() != null) {
+
+        if (userPassword.length() < minLengthPassword && !userPassword.isBlank() && user.getId() != null) {
             errors.rejectValue("password", "", "This password is very short. Do not enter if you want to keep the current password!");
         } else if (userPassword.length() < 4 && user.getId() == null) {
             //if password too short or empty and id is null
@@ -52,9 +55,9 @@ public class UserValidator implements Validator {
             errors.rejectValue("password", "", "This password is too short. Try again!");
             // if user doesn't enter a password and has the id
             // if enter is updating
-        } else if (userPassword.length() > 3 && user.getId() != null) {
+        } else if (userPassword.length() >= minLengthPassword && user.getId() != null) {
             user.setPassword(userPassword);
-        } else if (userPassword.length() > 3 && user.getId() == null) {
+        } else if (userPassword.length() >= minLengthPassword && user.getId() == null) {
             user.setPassword(userPassword);
         }
 

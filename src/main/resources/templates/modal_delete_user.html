@@ -6,8 +6,8 @@
     <div class="modal fade" th:attr="id=${'delete'+employee.id}" tabindex="-1" aria-labelledby="edit" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
-                <form class="text-center fw-bold" th:object="${employee}" th:action="@{/admin/employee-update}"
-                      th:method="PATCH" th:id="${employee.id}">
+                <form class="text-center fw-bold" th:object="${employee}" th:action="@{/admin/employee-delete/{id}(id=${employee.id})}"
+                      method="get" th:id="${employee.id}">
 
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="e">Edit user</h1>
@@ -15,53 +15,54 @@
                                 aria-label="Close"></button>
                     </div>
 
+                    <fieldset disabled>
                     <div class="modal-body col-6 offset-3" >
                         <div class="mb-3">
-                            <label for="idEditUser"><strong>ID</strong></label>
-                            <input class="form-control" type="number" readonly th:value="${employee.id}" name="id"
+                            <label for="idEditUser">ID</label>
+                            <input class="form-control" type="number" th:placeholder="${employee.id}" name="id"
                                    id="idEditUser">
                         </div>
 
                         <div class="mb-3">
                             <label for="nameEditUser" class="form-label">First name</label>
-                            <input class="form-control" type="text" th:value="${employee.name}" name="name"
-                                   id="nameEditUser" readonly>
+                            <input class="form-control" type="text" th:placeholder="${employee.name}" name="name"
+                                   id="nameEditUser">
                         </div>
 
                         <div class="mb-3">
                             <label for="surNameEditUser" class="form-label">Last name</label>
-                            <input type="text" class="form-control" id="surNameEditUser" th:value="${employee.surName}"
-                                   name="surName" readonly>
+                            <input type="text" class="form-control" id="surNameEditUser" th:placeholder="${employee.surName}"
+                                   name="surName">
                         </div>
 
 
                         <div class="mb-3">
                             <label for="ageEditUser" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="ageEditUser" th:value="${employee.age}"
-                                   name="age" readonly>
+                            <input type="number" class="form-control" id="ageEditUser" th:placeholder="${employee.age}"
+                                   name="age">
                         </div>
 
                         <div class="mb-3">
                             <label for="emailEditUser" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailEditUser" th:value="*{email}"
-                                   name="email" readonly>
+                            <input type="email" class="form-control" id="emailEditUser" th:placeholder="*{email}"
+                                   name="email">
                         </div>
 
                         <label for="roleEditUser" class="form-label">Role</label>
                         <select class="form-select mb-3" size="2" aria-label="size 2 select example"
-                                id="roleEditUser" th:value="${employee.roles}" name="roles" readonly>
+                                id="roleEditUser" th:placeholder="${employee.roles}" th:size="${employee.roles.size()}" name="roles">
                             <option th:each="role : ${employee.roles}"
                                     th:value="${role.id}"
                                     th:text="${role.name}">
                             </option>
                         </select>
                     </div>
-
+                    </fieldset>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Close
                         </button>
-                        <button type="submit" class="btn btn-primary">Delete
+                        <button type="submit" class="btn btn-danger">Delete
                         </button>
                     </div>
                 </form>

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:class="http://www.w3.org/1999/xhtml">
+       xmlns:class="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,22 +12,9 @@
 
 
 
-<!-- ******************************************************************************************************* -->
+<!-- **********************************************th:text="${#authorization.authentication.getAuthorities()}"********************************************************* -->
 <header>
-    <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
-        <div class="col-6">
-            <h6 class="nav-item">
-                <b sec:authentication="name"></b> with roles: <span
-                    th:text="${#authorization.authentication.getAuthorities()}"></span>
-            </h6>
-
-        </div>
-        <div class="col-6 text-end">
-            <form th:action="@{/logout}" method="POST">
-                <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
-            </form>
-        </div>
-    </div>
+    <div th:insert="header :: copy"></div>
 </header>
 <!-- ******************************************************************************************************* -->
 
@@ -45,13 +32,12 @@
         <div class="row bg-light" style="height: 100%">
             <div class="col-2  bg-body px-0 pt-3">
                 <div class="nav nav-pills flex-column">
-                    <a class="nav-link active" aria-current="page" href="#">Admin</a>
+                    <a class="nav-link active rounded-1"  aria-current="page" href="#">Admin</a>
                     <a class="nav-link" href="/user">User</a>
                 </div>
             </div>
             <!--the global container for admin panel -->
             <div class="col-md-10 px-4 pt-3 bg-light">
-                <!-- the follow column is for table-->
                 <div class="col-12">
                     <h4>Admin panel</h4>
                 </div>
@@ -61,21 +47,13 @@
                         <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">New user</a>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
-                        <!--users table-->
+                        <!-- this tab contains editing and deleting a user-->
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <!--start-->
                             <div th:insert="all_users_table :: copy"></div>
-
-                            <!--  end-->
                         </div>
-                        <!--end of first-->
-                        <!--user table of new user-->
+                        <!-- table of new user -->
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <!--start body: table of new user -->
-                                <!--here will be new user table-->
                                 <div th:insert="new_user_table :: copy"></div>
-
-                            <!--end body: table of new user -->
                         </div>
                     </div>
                 </div>

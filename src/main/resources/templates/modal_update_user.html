@@ -19,9 +19,9 @@
                     <div class="modal-body col-6 offset-3">
                         <div class="mb-3">
                             <label for="idEditUser"><strong>ID</strong></label>
-                            <input class="form-control" type="number" readonly th:value="${employee.id}" name="id"
+                            <input class="form-control" type="text" th:value="${employee.id}" disabled>
+                            <input class="form-control" type="hidden" readonly th:value="${employee.id}" name="id"
                                    id="idEditUser">
-                            <p style="color:red" th:if="${#fields.hasErrors('name')}">Shouldn't be empty</p>
                         </div>
 
                         <div class="mb-3">
@@ -55,14 +55,14 @@
                                    th:value="${employee.passwordConfirm}" name="passwordConfirm">
                         </div>
 
-                        <div class="mb-3">
-                            <label for="passwordEditUser" class="form-label">Password should be hidden</label>
-                            <input type="text" class="form-control" readonly th:value="*{password}"
+                        <div>
+                            <label for="passwordEditUser" class="form-label"></label>
+                            <input type="hidden" class="form-control" readonly th:value="*{password}"
                                    id="passwordEditUser" name="password">
                         </div>
 
                         <label for="roleEditUser" class="form-label">Role</label>
-                        <select class="form-select mb-3" size="2" aria-label="size 2 select example"
+                        <select class="form-select mb-3" th:size="${roleSet.size()}" aria-label="size 2 select example"
                                 id="roleEditUser" th:value="${employee.roles}" name="roles" required>
                             <option th:each="role : ${roleSet}"
                                     th:value="${role.id}"

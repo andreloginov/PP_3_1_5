@@ -14,20 +14,7 @@
 <!-- ********************************************* Nav bar ************************************************* -->
 
 <header>
-    <div class="row text-bg-dark py-2 m-0" style="color: papayawhip">
-        <div class="col-6">
-            <h6 class="nav-item">
-                <b sec:authentication="name"></b> <b>with roles</b>: <span
-                    th:text="${#authorization.authentication.getAuthorities()}"></span>
-
-            </h6>
-        </div>
-        <div class="col-6 text-end">
-            <form th:action="@{/logout}" method="POST">
-                <h6><a href="/logout" style="text-decoration:none;color: gray">Logout</a></h6>
-            </form>
-        </div>
-    </div>
+    <div th:insert="header :: copy"></div>
 </header>
 
 <!-- ******************************************************************************************************* -->
@@ -39,7 +26,7 @@
             <div class="col-2  bg-body px-0 pt-3">
                 <div class="nav nav-pills flex-column">
                     <a class="nav-link" href="/admin/employees">Admin</a>
-                    <a class="nav-link active" aria-current="page" href="#">User</a>
+                    <a class="nav-link active rounded-1" aria-current="page" href="#">User</a>
                 </div>
             </div>
 
@@ -60,8 +47,8 @@
                             <th scope="col">ID</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Salary</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Age</th>
                             <th scope="col">Role</th>
                         </tr>
                         </thead>

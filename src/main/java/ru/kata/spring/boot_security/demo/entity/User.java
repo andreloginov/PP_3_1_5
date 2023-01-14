@@ -21,22 +21,17 @@ public class User implements UserDetails {
     private Integer id;
 
     @Column(name = "name", unique = true, nullable = false)
-    @NotBlank
-    @NotEmpty
     private String name;
 
 
     @Column(name = "surname")
-    @Size(min = 2, message = "must be min 2 symbols")
     private String surName;
 
     @Column(name = "email")
-    @Email
     private String email;
 
     @Column(name = "age")
-    @Max(value = 110)
-    private int age;
+    private Integer age;
 
     @Column(name = "password")
     private String password;
@@ -51,7 +46,6 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @Fetch(FetchMode.JOIN)
-    @NotNull
     private Set<Role> roles;
 
     public User() {
@@ -60,7 +54,7 @@ public class User implements UserDetails {
     // *
     // *
     // *
-    // *** overridden methods of the UserDetails class ***
+    // * * * overridden methods of the UserDetails class * * *
     // *
     // *
     // *
@@ -141,16 +135,16 @@ public class User implements UserDetails {
         return email;
     }
 
-    public void setEmail(String department) {
-        this.email = department;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int salary) {
-        this.age = salary;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public void setPassword(String password) {
@@ -173,7 +167,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    // using to display formatted roles (like USER, ADMIN) without a prefix ROLE_
+    // using to display formatted roles (like 'USER, ADMIN') without a prefix ROLE_
     public String getPureRoles() {
         StringBuilder stringBuilder = new StringBuilder();
         String subStringToDelete = "ROLE_";
