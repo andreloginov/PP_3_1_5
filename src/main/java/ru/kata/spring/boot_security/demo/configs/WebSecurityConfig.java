@@ -16,7 +16,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+/*@EnableGlobalMethodSecurity(prePostEnabled = true)*/
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
 
@@ -29,11 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+
+
+// "/", "/index", "/css/**", "/js/**"
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/css/**", "/js/**").permitAll()
+                .antMatchers("/", "/index", "/css/**", "/js/**", "/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)

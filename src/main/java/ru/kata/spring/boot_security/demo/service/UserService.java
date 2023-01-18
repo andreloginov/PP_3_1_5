@@ -52,13 +52,17 @@ public class UserService implements UserDetailsService {
         return userFromDb.orElse(new User());
     }
 
+    public Optional<User> restFindUserById(Integer userId) {
+        return userRepository.findById(userId);
+    }
+
 
     public List<User> allUsers() {
         return userRepository.findAll();
     }
 
 
-    public boolean saveUser(User user) {
+    public User saveUser(User user) {
 
         PasswordEncoder encoder = applicationContext.getBean("passwordEncoder", PasswordEncoder.class);
         User userById = user.getId() == null ? null : userRepository.findById(user.getId()).get();
@@ -76,7 +80,7 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
-        return true;
+        return user;
     }
 
     public boolean deleteUser(Integer userId) {

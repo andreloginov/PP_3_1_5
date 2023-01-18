@@ -10,9 +10,7 @@
     </div>
     <div class="col-12 bg-body border px-3 py-3">
 
-        <div th:switch="${employees}">
-            <h2 th:case="null">No users yet!</h2>
-            <div th:case="*" th:with="userId=2">
+
                 <table class="table caption-top table-striped table-hover bg-body table-borderless border-top">
                     <caption class="p-0"></caption>
                     <thead>
@@ -30,28 +28,9 @@
 
                     <tbody>
 
-                    <tr th:each="emp : ${employees}">
-                        <td th:text="*{emp.id}"></td>
-                        <td th:text="*{emp.name}"></td>
-                        <td th:text="*{emp.surName}"></td>
-                        <td th:text="*{emp.email}"></td>
-                        <td th:text="*{emp.age}"></td>
-                        <td th:text="*{emp.getPureRoles()}"></td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-th-rows="${emp}"
-                                    th:attr="data-bs-target=${'#'+emp.id}"> Edit
-                            </button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-th-rows="${emp}"
-                                    th:attr="data-bs-target=${'#delete'+emp.id}"> Delete
-                            </button>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
+
 
         <div th:each="employee : ${employees}">
 
