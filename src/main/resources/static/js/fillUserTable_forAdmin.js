@@ -2,34 +2,18 @@ let url = 'http://localhost:8080/api/users';
 
 async function getArrayUsers(url) {
     let response = await fetch(url);
+    alert('EE');
     if (response.ok) {
         let data = await response.json();
         console.log(data);
+        alert('OK');
         return data;
     } else {
         alert("HTTP error: " + response.status)
     }
 }
 
-
-
-
-async function deleteUser(id) {
-    let urlDelete = `http://localhost:8080/api/users/${id}`;
-    await fetch(urlDelete, {
-        method: 'DELETE',
-    });
-    let response = await fetch(url);
-
-        let data = await response.json();
-        alert('Already get');
-        await getArrayUsers(url)
-            .then(value => fillTable(value));
-}
-
-
 async function fillTable(data) {
-
     let toFill = "";
     for (let index = 0; index < data.length; index++) {
         toFill += "<tr>";
@@ -48,17 +32,42 @@ async function fillTable(data) {
                                     data-bs-target='#delete${data[index].id}'> Delete
                             </button>`;
         toFill += "</td>";
-
-        toFill += "<td>";
-        toFill += `<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    onclick="deleteUser(${data[index].id})"> Test
-                            </button>`;
-        toFill += "</td>";
-
         toFill += "</tr>";
     }
-
     document.getElementsByTagName('tbody').item(0).innerHTML = toFill;
+}
+
+// all users display
+getArrayUsers(url)
+    .then(data => fillTable(data));
+
+
+
+const applicantForm = document.getElementById('deleteUser');
+alert(applicantForm.id);
+applicantForm.addEventListener('submit', handleFormSubmit);
+
+// заявитель
+
+
+
+function serializeForm(formNode) {
+    const { elements } = formNode;
+
+    const data = Array.from(elements)
+        .filter((item) => !!item.name)
+        .map((element) => {
+            const { name, value } = element;
+
+            return {name, value};
+        });
+    console.log(data);
+}
+
+async function handleFormSubmit(event) {
+    event.preventDefault();
+    console.log('Sending!');
+    serializeForm(applicantForm);
 }
 
 
@@ -66,8 +75,11 @@ async function fillTable(data) {
 
 
 
-getArrayUsers(url)
-    .then(value => fillTable(value));
+
+
+
+
+
 
 
 
