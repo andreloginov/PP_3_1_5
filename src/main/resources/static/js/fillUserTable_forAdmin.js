@@ -1,4 +1,5 @@
 let url = 'http://localhost:8080/api/users';
+/*-------------- start user service ----------------------  */
 
 async function getArrayUsers(url) {
     let response = await fetch(url);
@@ -10,6 +11,21 @@ async function getArrayUsers(url) {
         alert("HTTP error: " + response.status)
     }
 }
+
+async function getSingleUserById(id) {
+    let response = await fetch(`http://localhost:8080/api/users/${id}`)
+    if (response.ok) {
+        let data = await response.json();
+        console.log(data);
+        return data;
+    } else {
+        alert("HTTP error: " + response.status);
+    }
+}
+
+/*-------------- end user service ----------------------  */
+
+
 
 async function fillTable(data) {
     let toFill = "";
@@ -74,33 +90,30 @@ getArrayUsers(url)
 // ------ end ----------
 
 // ----- перехватчик для модального окна ----
+deleteModalCatcher().then(r => console.log('ff'));
 
-const exampleModal = document.getElementById('exampleModal')
-alert(exampleModal)
-exampleModal.addEventListener('show.bs.modal', event => {
-    // button that triggered the modal
-    const button = event.relatedTarget
-    // extract info from data-bs* attributes
-    const recipient = button.getAttribute('data-bs-whatever')
-    alert(recipient)
-    alert('EUUUUUUUUUUUUUUUUUUUUUUUUUUU')
+async function deleteModalCatcher() {
+    const exampleModal = document.getElementById('exampleModal')
+    alert(exampleModal)
+    exampleModal.addEventListener('show.bs.modal', event => {
+        // button that triggered the modal
+        const button = event.relatedTarget
+        // extract info from data-bs* attributes
+        const recipient = button.getAttribute('data-bs-whatever')
 
-    const modalTitle = exampleModal.querySelector('.modal-title')
-    const modalBodyInput = exampleModal.querySelector('.modal-body input')
-    const modalBodyInputs = exampleModal.getElementsByTagName('input');
-    for (let elem of modalBodyInputs) {
-        alert(elem);
-        alert('bebra');
-        elem.value = 'bebra';
-    }
-
-
-
-    modalTitle.textContent = `New message to ${recipient}`
-    modalBodyInput.value = recipient
-
-
-})
+        const modalTitle = exampleModal.querySelector('.modal-title')
+        const modalBodyInputs = exampleModal.getElementsByTagName('input');
+        getSingleUserById(recipient)
+            .then((user) => {
+                modalBodyInputs.namedItem('id').placeholder = user.id;
+                modalBodyInputs.namedItem('name').placeholder = user.name;
+                modalBodyInputs.namedItem('surName').placeholder = user.surName;
+                modalBodyInputs.namedItem('age').placeholder = user.age;
+                modalBodyInputs.namedItem('email').placeholder = user.email;
+            });
+        modalTitle.textContent = `New message to ${recipient}`
+    })
+}
 
 
 
