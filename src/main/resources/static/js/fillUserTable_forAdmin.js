@@ -55,8 +55,8 @@ async function fillTable(data) {
                             </button>`;
         toFill += "</td>";
         toFill += "<td>";
-        toFill += `<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-        data-bs data-bs-whatever="${data[index].id}">Открыть модальное окно для @mdo</button>`;
+        toFill += `<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        data-bs data-bs-whatever="${data[index].id}">Delete</button>`;
         toFill += "</td>";
         toFill += "</tr>";
     }
@@ -109,12 +109,11 @@ async function deleteModalCatcher() {
         // extract info from data-bs* attributes
         const recipient = button.getAttribute('data-bs-whatever')
 
-        const modalTitle = exampleModal.querySelector('.modal-title')
         const modalBodyInputs = exampleModal.getElementsByTagName('input');
         const modalBodySelector = document.getElementById('roleEditUser');
         getSingleUserById(recipient)
             .then((user) => {
-                modalBodyInputs.namedItem('id').placeholder = user.id;
+                modalBodyInputs.namedItem('idShow').placeholder = user.id;
                 modalBodyInputs.namedItem('id').value = user.id;
                 modalBodyInputs.namedItem('name').placeholder = user.name;
                 modalBodyInputs.namedItem('surName').placeholder = user.surName;
@@ -129,7 +128,6 @@ async function deleteModalCatcher() {
                     modalBodySelector.innerHTML = '<option disabled>ADMIN</option>';
                 }
             });
-        modalTitle.textContent = `New message to ${recipient}`
     })
 
     // --- перехватчик для кнопки submit ---

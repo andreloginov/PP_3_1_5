@@ -1,76 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <body>
 <div th:fragment="copy">
-    <div class="modal fade" th:attr="id=${'delete'+employee.id}" tabindex="-1" aria-labelledby="edit" aria-hidden="true" >
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="deleteUser" class="text-center fw-bold" th:object="${employee}" th:action="@{/admin/employee-delete/{id}(id=${employee.id})}"
-                      method="post">
-
+                <form id="deleteUser1" class="text-center fw-bold">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="e">Edit user</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <!-- ---- start form ------- -->
+                        <fieldset disabled>
+                            <div class="modal-body col-6 offset-3">
+                                <div class="mb-3">
+                                    <label for="notEdit">ID</label>
+                                    <input class="form-control" type="number" name="idShow" id="notEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <input class="form-control" hidden type="number" name="id" id="transmissionToJS">
+                                </div>
 
-                    <fieldset disabled>
-                    <div class="modal-body col-6 offset-3" >
-                        <div class="mb-3">
-                            <label for="idEditUser">ID</label>
-                            <input class="form-control" type="number" th:placeholder="${employee.id}" name="id"
-                                   id="idEditUser">
-                        </div>
+                                <div class="mb-3">
+                                    <label for="nameEditUser" class="form-label">First name</label>
+                                    <input class="form-control" type="text" name="name" id="nameEditUser">
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="nameEditUser" class="form-label">First name</label>
-                            <input class="form-control" type="text" th:placeholder="${employee.name}" name="name"
-                                   id="nameEditUser">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="surNameEditUser" class="form-label">Last name</label>
-                            <input type="text" class="form-control" id="surNameEditUser" th:placeholder="${employee.surName}"
-                                   name="surName">
-                        </div>
+                                <div class="mb-3">
+                                    <label for="surNameEditUser" class="form-label">Last name</label>
+                                    <input type="text" class="form-control" id="surNameEditUser" name="surName">
+                                </div>
 
 
-                        <div class="mb-3">
-                            <label for="ageEditUser" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="ageEditUser" th:placeholder="${employee.age}"
-                                   name="age">
-                        </div>
+                                <div class="mb-3">
+                                    <label for="ageEditUser" class="form-label">Age</label>
+                                    <input type="number" class="form-control" id="ageEditUser" name="age">
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="emailEditUser" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailEditUser" th:placeholder="*{email}"
-                                   name="email">
-                        </div>
+                                <div class="mb-3">
+                                    <label for="emailEditUser" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="emailEditUser" name="email">
+                                </div>
 
-                        <label for="roleEditUser" class="form-label">Role</label>
-                        <select class="form-select mb-3" size="2" aria-label="size 2 select example"
-                                id="roleEditUser" th:placeholder="${employee.roles}" th:size="${employee.roles.size()}" name="roles">
-                            <option th:each="role : ${employee.roles}"
-                                    th:value="${role.id}"
-                                    th:text="${role.name}"
-                            >
-                            </option>
-                        </select>
+                                <label for="roleEditUser" class="form-label">Role</label>
+                                <select class="form-select mb-3" size="2" aria-label="size 2 select example"
+                                        id="roleEditUser" name="roles">
+                                </select>
+                            </div>
+                        </fieldset>
+                        <!-- -----end form -------- -->
                     </div>
-                    </fieldset>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="submit" class="btn btn-danger">Delete
-                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>
