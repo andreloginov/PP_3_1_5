@@ -1,8 +1,9 @@
 let url = 'http://localhost:8080/api/users';
 /*-------------- start user service ----------------------  */
+// ----- here we interact with the database -------------
 
-async function getArrayUsers(url) {
-    let response = await fetch(url);
+async function getArrayUsers() {
+    let response = await fetch('http://localhost:8080/api/users');
     if (response.ok) {
         let data = await response.json();
         console.log(data);
@@ -21,6 +22,13 @@ async function getSingleUserById(id) {
     } else {
         alert("HTTP error: " + response.status);
     }
+}
+
+async function deleteUserById(id) {
+    let response = await fetch(`http://localhost:8080/api/users/${id}`, {
+        method: 'delete'
+    });
+    alert(`Method deleteUserById with ID ${id} is already finished`);
 }
 
 /*-------------- end user service ----------------------  */
@@ -58,7 +66,7 @@ async function fillTable(data) {
 
 
 // all users display
-getArrayUsers(url)
+getArrayUsers()
     .then(data => fillTable(data));
 
 // --- перехватчик для кнопки submit ---
@@ -107,6 +115,7 @@ async function deleteModalCatcher() {
         getSingleUserById(recipient)
             .then((user) => {
                 modalBodyInputs.namedItem('id').placeholder = user.id;
+                modalBodyInputs.namedItem('id').value = user.id;
                 modalBodyInputs.namedItem('name').placeholder = user.name;
                 modalBodyInputs.namedItem('surName').placeholder = user.surName;
                 modalBodyInputs.namedItem('age').placeholder = user.age;
@@ -125,9 +134,11 @@ async function deleteModalCatcher() {
 
     // --- перехватчик для кнопки submit ---
 
-    const applicantForm = document.getElementById('deleteUser');
+    const applicantForm = document.getElementById('deleteUser1');
     alert(applicantForm.id);
     applicantForm.addEventListener('submit', handleFormSubmit);
+
+
 
 
     function serializeForm(formNode) {
@@ -141,14 +152,30 @@ async function deleteModalCatcher() {
                 return {name, value};
             });
         console.log(data);
+        return data;
     }
 
     async function handleFormSubmit(event) {
         event.preventDefault();
         console.log('Sending!');
-        serializeForm(applicantForm);
-    }
+        let data = serializeForm(applicantForm);
+        data.forEach(item => {
+            if (item.name === 'id') {
+                alert("IT WORKS")
+                alert(item.value)
+                deleteUserById(item.value).then(() => getArrayUsers().then(value => fillTable(value)));
+            }
+        })
 
+        // close the modal window
+        const modal = bootstrap.Modal.getInstance(exampleModal);
+        modal.hide();
+        exampleModal.addEventListener('hidden.bs.modal', () => {
+            modal.dispose();
+        }, {once:true});
+
+
+    }
 // ------ end ----------
 }
 

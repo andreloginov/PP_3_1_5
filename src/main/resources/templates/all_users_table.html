@@ -42,19 +42,44 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Получатель:</label>
-                                <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="recipient-name1" class="col-form-label">Получатель:</label>
-                                <input type="text" class="form-control" id="recipient-name1">
-                            </div>
-                            <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Сообщение:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                            </div>
+                        <form id="deleteUser1">
+                            <!-- ---- start form ------- -->
+                            <fieldset disabled>
+                                <div class="modal-body col-6 offset-3" >
+                                    <div class="mb-3">
+                                        <label for="idEditUser">ID</label>
+                                        <input class="form-control" type="number" name="id" id="idEditUser">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="nameEditUser" class="form-label">First name</label>
+                                        <input class="form-control" type="text" name="name" id="nameEditUser">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="surNameEditUser" class="form-label">Last name</label>
+                                        <input type="text" class="form-control" id="surNameEditUser" name="surName">
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label for="ageEditUser" class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="ageEditUser" name="age">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="emailEditUser" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="emailEditUser" name="email">
+                                    </div>
+
+                                    <label for="roleEditUser" class="form-label">Role</label>
+                                    <select class="form-select mb-3" size="2" aria-label="size 2 select example"
+                                            id="roleEditUser" name="roles">
+                                    </select>
+                                </div>
+                            </fieldset>
+                            <!-- -----end form -------- -->
+                            <button type="submit" class="btn btn-primary">Отправить сообщение FORM</button>
                         </form>
                     </div>
                     <div class="modal-footer">
