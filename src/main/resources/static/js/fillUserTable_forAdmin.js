@@ -50,8 +50,8 @@ async function fillTable(data) {
         }
         toFill += "</td>";
         toFill += "<td>";
-        toFill += `<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target='#delete${data[index].id}'> Delete
+        toFill += `<button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                    data-bs-target='#updateModal' data-bs-whatever="${data[index].id}"> Delete
                             </button>`;
         toFill += "</td>";
         toFill += "<td>";
@@ -176,6 +176,86 @@ async function deleteModalCatcher() {
     }
 // ------ end ----------
 }
+/* ---------------------------------- start parts editing ---------------------------------*/
+
+updateModal().then(r => console.log('update modal'));
+
+async function updateModal() {
+    const updateModal = document.getElementById('updateModal')
+    alert(updateModal)
+    updateModal.addEventListener('show.bs.modal', event => {
+        // button that triggered the modal
+        const button = event.relatedTarget
+        // extract info from data-bs* attributes
+        const idAttribute = button.getAttribute('data-bs-whatever')
+
+        const modalBodyInputs = updateModal.getElementsByTagName('input');
+        const modalBodySelector = document.getElementById('roleEditUser1');
+        getSingleUserById(idAttribute)
+            .then((user) => {
+                modalBodyInputs.namedItem('idShow').value = user.id;
+                modalBodyInputs.namedItem('id').value = user.id;
+                modalBodyInputs.namedItem('name').value = user.name;
+                modalBodyInputs.namedItem('surName').value = user.surName;
+                modalBodyInputs.namedItem('age').value = user.age;
+                modalBodyInputs.namedItem('email').value = user.email;
+                modalBodyInputs.namedItem('passwordConfirm').value = user.passwordConfirm;
+                modalBodyInputs.namedItem('password').value = user.password;
+                console.log(modalBodySelector);
+
+                modalBodySelector.innerHTML = '<option value="1">ADMIN</option> ' +
+                    '<option value="2">USER</option>';
+            });
+    })
+
+    // --- перехватчик для кнопки submit ---
+
+    const applicantForm = document.getElementById('deleteUser1');
+    alert(applicantForm.id);
+    applicantForm.addEventListener('submit', handleFormSubmit);
+
+
+
+
+    function serializeForm(formNode) {
+        const {elements} = formNode;
+
+        const data = Array.from(elements)
+            .filter((item) => !!item.name)
+            .map((element) => {
+                const {name, value} = element;
+
+                return {name, value};
+            });
+        console.log(data);
+        return data;
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+        console.log('Sending!');
+        let data = serializeForm(applicantForm);
+        data.forEach(item => {
+            if (item.name === 'id') {
+                alert("IT WORKS")
+                alert(item.value)
+                deleteUserById(item.value).then(() => getArrayUsers().then(value => fillTable(value)));
+            }
+        })
+
+        // close the modal window
+        const modal = bootstrap.Modal.getInstance(exampleModal);
+        modal.hide();
+        exampleModal.addEventListener('hidden.bs.modal', () => {
+            modal.dispose();
+        }, {once:true});
+
+
+    }
+}
+
+/* ---------------------------------- end parts editing ---------------------------------*/
+
 
 
 
