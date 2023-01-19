@@ -89,7 +89,7 @@ getArrayUsers(url)
 
 // ------ end ----------
 
-// ----- перехватчик для модального окна ----
+// ----- перехватчик before starting modal для модального окна ----
 deleteModalCatcher().then(r => console.log('ff'));
 
 async function deleteModalCatcher() {
@@ -103,6 +103,7 @@ async function deleteModalCatcher() {
 
         const modalTitle = exampleModal.querySelector('.modal-title')
         const modalBodyInputs = exampleModal.getElementsByTagName('input');
+        const modalBodySelector = document.getElementById('roleEditUser');
         getSingleUserById(recipient)
             .then((user) => {
                 modalBodyInputs.namedItem('id').placeholder = user.id;
@@ -110,10 +111,47 @@ async function deleteModalCatcher() {
                 modalBodyInputs.namedItem('surName').placeholder = user.surName;
                 modalBodyInputs.namedItem('age').placeholder = user.age;
                 modalBodyInputs.namedItem('email').placeholder = user.email;
+                console.log(modalBodySelector);
+                let options = "";
+                if (user.roles.length > 1) {
+                    modalBodySelector.innerHTML = '<option disabled>ADMIN</option> ' +
+                        '<option disabled>USER</option>';
+                } else {
+                    modalBodySelector.innerHTML = '<option disabled>ADMIN</option>';
+                }
             });
         modalTitle.textContent = `New message to ${recipient}`
     })
+
+    // --- перехватчик для кнопки submit ---
+
+    const applicantForm = document.getElementById('deleteUser');
+    alert(applicantForm.id);
+    applicantForm.addEventListener('submit', handleFormSubmit);
+
+
+    function serializeForm(formNode) {
+        const {elements} = formNode;
+
+        const data = Array.from(elements)
+            .filter((item) => !!item.name)
+            .map((element) => {
+                const {name, value} = element;
+
+                return {name, value};
+            });
+        console.log(data);
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+        console.log('Sending!');
+        serializeForm(applicantForm);
+    }
+
+// ------ end ----------
 }
+
 
 
 
