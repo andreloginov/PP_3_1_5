@@ -87,9 +87,18 @@ exampleModal.addEventListener('show.bs.modal', event => {
 
     const modalTitle = exampleModal.querySelector('.modal-title')
     const modalBodyInput = exampleModal.querySelector('.modal-body input')
+    const modalBodyInputs = exampleModal.getElementsByTagName('input');
+    for (let elem of modalBodyInputs) {
+        alert(elem);
+        alert('bebra');
+        elem.value = 'bebra';
+    }
+
+
 
     modalTitle.textContent = `New message to ${recipient}`
     modalBodyInput.value = recipient
+
 
 })
 
