@@ -6,7 +6,9 @@ async function getArrayUsers() {
     let response = await fetch('http://localhost:8080/api/users');
     if (response.ok) {
         let data = await response.json();
+        console.log('All user _____________________________ :')
         console.log(data);
+        console.log('_________________________________________________')
         return data;
     } else {
         alert("HTTP error: " + response.status)
@@ -29,6 +31,14 @@ async function deleteUserById(id) {
         method: 'delete'
     });
     alert(`Method deleteUserById with ID ${id} is already finished`);
+}
+
+async function userUpdateByBody(user) {
+     await fetch('http://localhost:8080/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        body: JSON.stringify(user),
+    });
 }
 
 /*-------------- end user service ----------------------  */
@@ -133,7 +143,6 @@ async function deleteModalCatcher() {
     // --- перехватчик для кнопки submit ---
 
     const applicantForm = document.getElementById('deleteUser1');
-    alert(applicantForm.id);
     applicantForm.addEventListener('submit', handleFormSubmit);
 
 
@@ -176,6 +185,8 @@ async function deleteModalCatcher() {
     }
 // ------ end ----------
 }
+
+
 /* ---------------------------------- start parts editing ---------------------------------*/
 
 updateModal().then(r => console.log('update modal'));
@@ -210,43 +221,32 @@ async function updateModal() {
 
     // --- перехватчик для кнопки submit ---
 
-    const applicantForm = document.getElementById('deleteUser1');
-    alert(applicantForm.id);
+    const applicantForm = document.getElementById('userFormUpdate');
     applicantForm.addEventListener('submit', handleFormSubmit);
 
 
+    async function serializeForm(formNode) {
 
 
-    function serializeForm(formNode) {
-        const {elements} = formNode;
 
-        const data = Array.from(elements)
-            .filter((item) => !!item.name)
-            .map((element) => {
-                const {name, value} = element;
-
-                return {name, value};
-            });
-        console.log(data);
-        return data;
     }
 
     async function handleFormSubmit(event) {
         event.preventDefault();
-        console.log('Sending!');
-        let data = serializeForm(applicantForm);
-        data.forEach(item => {
-            if (item.name === 'id') {
-                alert("IT WORKS")
-                alert(item.value)
-                deleteUserById(item.value).then(() => getArrayUsers().then(value => fillTable(value)));
-            }
-        })
+        console.log('Stopping submit!');
+        let data = await serializeForm(applicantForm);
+        const data1 = new FormData(event.target);
+        const value = Object.fromEntries(data1.entries());
+        console.log('VEYVETY____________________________________________________________________')
+        console.log(value);
+        console.log('VEYVETY____________________________________________________________________')
+        await userUpdateByBody(value);
+
 
         // close the modal window
-        const modal = bootstrap.Modal.getInstance(exampleModal);
+        const modal = bootstrap.Modal.getInstance(updateModal);
         modal.hide();
-        exampleModal.addEventListener('hidden.bs.modal', () => {
+        updateModal.addEventListener('hidden.bs.modal', () => {
             modal.dispose();
         }, {once:true});
 
