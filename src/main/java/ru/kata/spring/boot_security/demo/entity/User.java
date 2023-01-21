@@ -185,7 +185,18 @@ public class User implements UserDetails {
     }
 
     public boolean clearNullRoleByName() {
-        return roles.removeIf(currentRole -> currentRole.getName() == null);
+        /*setRoles(roles.stream().filter(role -> {
+            if (role.getName().contains("ADMIN")) {
+                role.setId(1);
+                return false;
+            } else if (role.getName().contains("USER")) {
+                role.setId(2);
+                return false;
+            } else {
+                return true;
+            }
+        }).collect(Collectors.toSet()));*/
+        return true;
     }
 
 

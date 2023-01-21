@@ -108,7 +108,6 @@ public class UserService implements UserDetailsService {
 
     public HttpStatus updateUser(User userUpdate) throws IllegalAccessException {
 
-        userUpdate.clearNullRoleByName();
         HttpStatus httpStatus = checkFields(userUpdate) ? HttpStatus.OK : HttpStatus.NOT_MODIFIED;
         if (httpStatus == HttpStatus.OK) {
             userRepository.save(userUpdate);

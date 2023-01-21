@@ -81,15 +81,28 @@ async function userUpdateByBody(data, selectedValues) {
                     * ID 2 is a user role
                     * name will be undefined if it's unselected
                 */
-                "id": 1,
-                "name": selectedValues[0],
+                "id": null,
+                "name": null,
             },
             {
-                "id": 2,
-                "name": selectedValues[1],
+                "id": null,
+                "name": null,
             }
         ]
     }
+    if (selectedValues.length > 1) {
+        user.roles[0].id = 1;
+        user.roles[0].name = selectedValues[0];
+
+        user.roles[1].id = 2;
+        user.roles[1].name = selectedValues[1];
+    } else if (selectedValues.length === 1) {
+        user.roles[0].id = selectedValues[0] === "ROLE_ADMIN" ? 1 : 2;
+        user.roles[0].name = selectedValues[0];
+        user.roles.pop();
+    }
+
+
     console.log('user.roles:')
     console.log(user)
     console.log('___________________')
