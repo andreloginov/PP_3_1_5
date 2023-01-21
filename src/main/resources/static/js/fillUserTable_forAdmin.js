@@ -155,33 +155,6 @@ async function fillTable(data) {
 getArrayUsers()
     .then(data => fillTable(data));
 
-// --- перехватчик для кнопки submit ---
-
-// const applicantForm = document.getElementById('deleteUser');
-// alert(applicantForm.id);
-// applicantForm.addEventListener('submit', handleFormSubmit);
-//
-//
-// function serializeForm(formNode) {
-//     const { elements } = formNode;
-//
-//     const data = Array.from(elements)
-//         .filter((item) => !!item.name)
-//         .map((element) => {
-//             const { name, value } = element;
-//
-//             return {name, value};
-//         });
-//     console.log(data);
-// }
-//
-// async function handleFormSubmit(event) {
-//     event.preventDefault();
-//     console.log('Sending!');
-//     serializeForm(applicantForm);
-// }
-
-// ------ end ----------
 
 // ----- перехватчик before starting modal для модального окна ----
 deleteModalCatcher().then(r => console.log('ff'));
@@ -205,8 +178,6 @@ async function deleteModalCatcher() {
                 modalBodyInputs.namedItem('surName').placeholder = user.surName;
                 modalBodyInputs.namedItem('age').placeholder = user.age;
                 modalBodyInputs.namedItem('email').placeholder = user.email;
-                console.log(modalBodySelector);
-                let options = "";
                 if (user.roles.length > 1) {
                     modalBodySelector.innerHTML = '<option disabled>ADMIN</option> ' +
                         '<option disabled>USER</option>';
@@ -220,7 +191,6 @@ async function deleteModalCatcher() {
 
     const applicantForm = document.getElementById('deleteUser1');
     applicantForm.addEventListener('submit', handleFormSubmit);
-
 
 
 
@@ -240,7 +210,6 @@ async function deleteModalCatcher() {
 
     async function handleFormSubmit(event) {
         event.preventDefault();
-        console.log('Sending!');
         let data = serializeForm(applicantForm);
         data.forEach(item => {
             if (item.name === 'id') {
@@ -251,11 +220,7 @@ async function deleteModalCatcher() {
         })
 
         // close the modal window
-        const modal = bootstrap.Modal.getInstance(exampleModal);
-        modal.hide();
-        exampleModal.addEventListener('hidden.bs.modal', () => {
-            modal.dispose();
-        }, {once:true});
+        await closeModalWindow(exampleModal);
 
 
     }
@@ -289,13 +254,13 @@ async function updateModal() {
                 modalBodyInputs.namedItem('email').value = user.email;
                 modalBodyInputs.namedItem('passwordConfirm').value = user.passwordConfirm;
                 modalBodyInputs.namedItem('password').value = user.password;
-
-                let innerHtml = "";
-                for (let i = 0; i < roleArray.length; i++) {
-                     innerHtml += `<option value="${roleArray[i].name}">${roleArray[i].name}</option>`;
-                }
-                modalBodySelector.innerHTML = innerHtml;
+                roleArray.forEach(option =>
+                    modalBodySelector.add(
+                        new Option(option.name, option.name)
+                    ));
+                roleArray.forEach(option => console.log(option))
             });
+
     })
 
     // --- перехватчик для кнопки submit ---
@@ -307,14 +272,24 @@ async function updateModal() {
         event.preventDefault();
         const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
 
+        alert('pre auf')
         let data1 = new FormData(event.target);
-        let value = Object.fromEntries(data1.entries());
 
+        console.log('-------------')
+        let words = ["apple", "ball", "cat"]
+        words.forEach(value1 => data1.append("roles[]", value1))
+        console.log(data1.getAll("roles[]"))
+        console.log('-------------')
+
+        let value = Object.fromEntries(data1.entries());
+        alert('AUUUF')
+        console.log(data1)
+        console.log(value)
         await userUpdateByBody(value, selectedValues)
             .then(response => response.ok ? fillTable()
                     .then(() => closeModalWindow(updateModal))
                     .then(() => alert('data changed successfully'))
-                : alert('Введите корректные данные'))
+                : alert('Enter a correct data'))
     }
 }
 
