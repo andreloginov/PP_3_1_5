@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -176,6 +178,14 @@ public class User implements UserDetails {
         /*roles.forEach(role -> stringBuilder.append(role.getName()).append(", "));*/
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
         return stringBuilder.toString();
+    }
+
+    public boolean deleteSingleRoleFromRoles(String role) {
+        return roles.removeIf(currentRole -> currentRole.getName().contains(role));
+    }
+
+    public boolean clearNullRoleByName() {
+        return roles.removeIf(currentRole -> currentRole.getName() == null);
     }
 
 

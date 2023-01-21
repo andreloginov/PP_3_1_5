@@ -6,10 +6,13 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -50,15 +53,20 @@ public class RestUserController {
 
     }
 
-    @PutMapping("/users/{id}")
-    ResponseEntity<User> updateExistingUser(@RequestBody User userUpdate, @PathVariable Integer id) {
-        userService.saveUser(userUpdate);
-        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.FOUND);
+    @PutMapping("/users")
+    ResponseEntity<User> updateExistingUser(@RequestBody User userUpdate) throws IllegalAccessException {
+        HttpStatus status = userService.updateUser(userUpdate);
+        return new ResponseEntity<>(userUpdate, status);
     }
 
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
+    }
+
+    @GetMapping("/getRoles")
+    ResponseEntity<List<Role>> getRoleSet() {
+        return new ResponseEntity<>(userService.getRoleSet(), HttpStatus.OK);
     }
 
 

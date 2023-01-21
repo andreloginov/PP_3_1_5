@@ -1,51 +1,113 @@
 let url = 'http://localhost:8080/api/users';
+
+async function getRoles() {
+    const response = await fetch('http://localhost:8080/api/getRoles')
+    if (response.ok) {
+        let data = await response.json();
+        console.log(data)
+        return data;
+    } else {
+        alert(`Error to get the role list. Status: ${response.status}`)
+    }
+}
+
+// the function below returns an array of roles
+function getSelectValues(select) {
+    let result = [];
+    let options = select && select.options;
+    let opt;
+
+    for (let i = 0, iLen=options.length; i < iLen; i++) {
+        opt = options[i];
+
+        if (opt.selected) {
+            result.push(opt.value || opt.text);
+        }
+    }
+    console.log('Selected values:')
+    console.log(result)
+    return result;
+}
+
+async function closeModalWindow(updateModal) {
+    const modal = bootstrap.Modal.getInstance(updateModal);
+    modal.hide();
+    updateModal.addEventListener('hidden.bs.modal', () => {
+        modal.dispose();
+    }, {once:true});
+}
+
 /*-------------- start user service ----------------------  */
 // ----- here we interact with the database -------------
 
 async function getArrayUsers() {
     let response = await fetch('http://localhost:8080/api/users');
     if (response.ok) {
-        let data = await response.json();
-        console.log('All user _____________________________ :')
-        console.log(data);
-        console.log('_________________________________________________')
-        return data;
+        return await response.json();
     } else {
-        alert("HTTP error: " + response.status)
+        alert("HTTP error(не удалось получить пользователей): " + response.status)
     }
 }
 
 async function getSingleUserById(id) {
     let response = await fetch(`http://localhost:8080/api/users/${id}`)
     if (response.ok) {
-        let data = await response.json();
-        console.log(data);
-        return data;
+        return await response.json();
     } else {
         alert("HTTP error: " + response.status);
     }
 }
 
 async function deleteUserById(id) {
-    let response = await fetch(`http://localhost:8080/api/users/${id}`, {
+    await fetch(`http://localhost:8080/api/users/${id}`, {
         method: 'delete'
     });
     alert(`Method deleteUserById with ID ${id} is already finished`);
 }
 
-async function userUpdateByBody(user) {
-     await fetch('http://localhost:8080/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
-        body: JSON.stringify(user),
+async function userUpdateByBody(data, selectedValues) {
+    let user = {
+        id: data.id,
+        name: data.name,
+        age: data.age,
+        surName: data.surName,
+        email: data.email,
+        password: data.password,
+        passwordConfirm: data.passwordConfirm,
+        roles: [
+            {
+                /*
+                    * ID 1 is an admin role
+                    * ID 2 is a user role
+                    * name will be undefined if it's unselected
+                */
+                "id": 1,
+                "name": selectedValues[0],
+            },
+            {
+                "id": 2,
+                "name": selectedValues[1],
+            }
+        ]
+    }
+    console.log('user.roles:')
+    console.log(user)
+    console.log('___________________')
+
+    return await fetch('http://localhost:8080/api/users', {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json;charset=utf-8'},
+        body: JSON.stringify(user)
     });
 }
 
 /*-------------- end user service ----------------------  */
 
 
-
 async function fillTable(data) {
+    if (data == null) {
+        data = await getArrayUsers()
+    }
     let toFill = "";
     for (let index = 0; index < data.length; index++) {
         toFill += "<tr>";
@@ -61,8 +123,9 @@ async function fillTable(data) {
         toFill += "</td>";
         toFill += "<td>";
         toFill += `<button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                    data-bs-target='#updateModal' data-bs-whatever="${data[index].id}"> Delete
+                                    data-bs-target='#updateModal' data-bs-whatever="${data[index].id}"> Edit
                             </button>`;
+
         toFill += "</td>";
         toFill += "<td>";
         toFill += `<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -187,13 +250,14 @@ async function deleteModalCatcher() {
 }
 
 
-/* ---------------------------------- start parts editing ---------------------------------*/
+/* ---------------------------------- start the part of editing ---------------------------------*/
 
 updateModal().then(r => console.log('update modal'));
 
 async function updateModal() {
+    const roleArray = await getRoles();
     const updateModal = document.getElementById('updateModal')
-    alert(updateModal)
+
     updateModal.addEventListener('show.bs.modal', event => {
         // button that triggered the modal
         const button = event.relatedTarget
@@ -212,10 +276,12 @@ async function updateModal() {
                 modalBodyInputs.namedItem('email').value = user.email;
                 modalBodyInputs.namedItem('passwordConfirm').value = user.passwordConfirm;
                 modalBodyInputs.namedItem('password').value = user.password;
-                console.log(modalBodySelector);
 
-                modalBodySelector.innerHTML = '<option value="1">ADMIN</option> ' +
-                    '<option value="2">USER</option>';
+                let innerHtml = "";
+                for (let i = 0; i < roleArray.length; i++) {
+                     innerHtml += `<option value="${roleArray[i].name}">${roleArray[i].name}</option>`;
+                }
+                modalBodySelector.innerHTML = innerHtml;
             });
     })
 
@@ -224,37 +290,22 @@ async function updateModal() {
     const applicantForm = document.getElementById('userFormUpdate');
     applicantForm.addEventListener('submit', handleFormSubmit);
 
-
-    async function serializeForm(formNode) {
-
-
-
-    }
-
     async function handleFormSubmit(event) {
         event.preventDefault();
-        console.log('Stopping submit!');
-        let data = await serializeForm(applicantForm);
-        const data1 = new FormData(event.target);
-        const value = Object.fromEntries(data1.entries());
-        console.log('VEYVETY____________________________________________________________________')
-        console.log(value);
-        console.log('VEYVETY____________________________________________________________________')
-        await userUpdateByBody(value);
+        const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
 
+        let data1 = new FormData(event.target);
+        let value = Object.fromEntries(data1.entries());
 
-        // close the modal window
-        const modal = bootstrap.Modal.getInstance(updateModal);
-        modal.hide();
-        updateModal.addEventListener('hidden.bs.modal', () => {
-            modal.dispose();
-        }, {once:true});
-
-
+        await userUpdateByBody(value, selectedValues)
+            .then(response => response.ok ? fillTable()
+                    .then(() => closeModalWindow(updateModal))
+                    .then(() => alert('data changed successfully'))
+                : alert('Введите корректные данные'))
     }
 }
 
-/* ---------------------------------- end parts editing ---------------------------------*/
+/* ---------------------------------- end the part of editing ---------------------------------*/
 
 
 
