@@ -45,6 +45,7 @@ async function getArrayUsers() {
     } else {
         alert("HTTP error(не удалось получить пользователей): " + response.status)
     }
+
 }
 
 async function getSingleUserById(id) {
@@ -140,12 +141,16 @@ async function deleteModalCatcher() {
                 modalBodyInputs.namedItem('surName').placeholder = user.surName;
                 modalBodyInputs.namedItem('age').placeholder = user.age;
                 modalBodyInputs.namedItem('email').placeholder = user.email;
-                if (user.roles.length > 1) {
-                    modalBodySelector.innerHTML = '<option disabled>ADMIN</option> ' +
-                        '<option disabled>USER</option>';
-                } else {
-                    modalBodySelector.innerHTML = '<option disabled>ADMIN</option>';
+
+                while (modalBodySelector.hasChildNodes()) {
+                    modalBodySelector.childNodes.forEach(node => node.remove())
                 }
+
+                modalBodySelector.setAttribute('size', user.roles.length.toString());
+                user.roles.forEach(option =>
+                    modalBodySelector.add(
+                        new Option(option.name)
+                    ));
             });
     })
 
@@ -222,10 +227,13 @@ async function updateModal() {
                 modalBodyInputs.namedItem('email').value = user.email;
                 modalBodyInputs.namedItem('passwordConfirm').value = user.passwordConfirm;
                 modalBodyInputs.namedItem('password').value = user.password;
-                roleArray.forEach(option =>
-                    modalBodySelector.add(
-                        new Option(option.name, option.name)
-                    ));
+                if (modalBodySelector.children.length === 0) {
+                    roleArray.forEach(option =>
+                        modalBodySelector.add(
+                            new Option(option.name, option.name)
+                        ));
+                }
+
             });
 
     })
@@ -312,6 +320,8 @@ async function createUser() {
     const applicantForm = document.getElementById('newUserForm');
     applicantForm.addEventListener('submit', handleFormSubmit);
 
+    console.log(applicantForm)
+
     async function handleFormSubmit(event) {
         event.preventDefault();
         let user = await getUserAsJSObject(applicantForm, event);
@@ -320,9 +330,9 @@ async function createUser() {
         if (response.ok) {
             await fillTable();
             await document.getElementById('nav-home-tab').click()
-            alert('New user is saved')
+            alert('User saved')
         } else {
-            alert('Enter a correct data')
+            alert('Enter correct data')
         }
     }
 }
