@@ -13,16 +13,15 @@
                     </div>
                     <div class="modal-body">
                         <!-- ---- start form ------- -->
-                        <fieldset disabled>
                             <div class="modal-body col-6 offset-3">
+                                <div class="mb-3">
+                                    <input class="form-control" hidden type="number" name="id" id="transferToJS">
+                                </div>
+                                <fieldset disabled>
                                 <div class="mb-3">
                                     <label for="notEdit">ID</label>
                                     <input class="form-control" type="number" name="idShow" id="notEdit">
                                 </div>
-                                <div class="mb-3">
-                                    <input class="form-control" hidden type="number" name="id" id="transmissionToJS">
-                                </div>
-
                                 <div class="mb-3">
                                     <label for="nameEditUser" class="form-label">First name</label>
                                     <input class="form-control" type="text" name="name" id="nameEditUser">
@@ -48,8 +47,9 @@
                                 <select class="form-select mb-3" aria-label="size 2 select example"
                                         id="roleEditUser" name="roles">
                                 </select>
+                                </fieldset>
                             </div>
-                        </fieldset>
+
                         <!-- -----end form -------- -->
                     </div>
                     <div class="modal-footer">

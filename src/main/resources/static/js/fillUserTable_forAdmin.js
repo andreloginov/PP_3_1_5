@@ -58,10 +58,9 @@ async function getSingleUserById(id) {
 }
 
 async function deleteUserById(id) {
-    await fetch(`http://localhost:8080/api/users/${id}`, {
+    return await fetch(`http://localhost:8080/api/users/${id}`, {
         method: 'delete'
     });
-    alert(`Method deleteUserById with ID ${id} is already finished`);
 }
 
 async function userPostOrPutRequest(user, method) {
@@ -114,14 +113,22 @@ async function fillTable(data) {
 
 
 
-// all users display
+// display users array
 getArrayUsers()
     .then(data => fillTable(data)).then();
 
 
-// ----- перехватчик before starting modal для модального окна ----
+/*
+    *
+    * -----------------------------------(start) delete user ----------------------------------
+    *
+*/
 deleteModalCatcher().then(r => console.log('Delete script is successfully loaded'));
-
+/*
+    *
+    * -----------------------------------(end) delete user ----------------------------------
+    *
+*/
 async function deleteModalCatcher() {
     const exampleModal = document.getElementById('exampleModal')
     alert(exampleModal)
@@ -159,47 +166,27 @@ async function deleteModalCatcher() {
     const applicantForm = document.getElementById('deleteUser1');
     applicantForm.addEventListener('submit', handleFormSubmit);
 
-
-
-    function serializeForm(formNode) {
-        const {elements} = formNode;
-
-        const data = Array.from(elements)
-            .filter((item) => !!item.name)
-            .map((element) => {
-                const {name, value} = element;
-
-                return {name, value};
-            });
-        console.log(data);
-        return data;
-    }
-
     async function handleFormSubmit(event) {
+        console.log('Entered in the function handle')
+        console.log(applicantForm)
         event.preventDefault();
-        let data = serializeForm(applicantForm);
-        data.forEach(item => {
-            if (item.name === 'id') {
-                alert("IT WORKS")
-                alert(item.value)
-                deleteUserById(item.value).then(() => getArrayUsers().then(value => fillTable(value)));
-            }
-        })
-
-        // close the modal window
-        await closeModalWindow(exampleModal);
+        let user = await getUserAsJSObject(applicantForm, event);
 
 
+        let response = await deleteUserById(user.id);
+        console.log(user)
+
+        if (response.ok) {
+            await closeModalWindow(exampleModal);
+            await fillTable();
+        } else {
+            alert('Enter correct data');
+        }
     }
-// ------ end ----------
 }
-
-
 /*
     *
-    *
-    * ----------------------------------- editing an existing user ----------------------------------
-    *
+    * -----------------------------------(start) edit an existing user ----------------------------------
     *
 */
 
@@ -257,18 +244,19 @@ async function updateModal() {
 
 /*
     *
-    *
-    * ----------------------------------- end of editing an existing user ----------------------------------
-    *
+    * -----------------------------------(end) edit an existing user ----------------------------------
     *
 */
+
 
 async function getUserAsJSObject(applicantForm, event) {
 
     const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
     let formData = new FormData(event.target);
     let data = Object.fromEntries(formData.entries());
-
+    console.log('getUserAsJSObject()')
+    console.log(formData)
+    console.log(data)
     let user = {
         id: data.id,
         name: data.name,
@@ -310,7 +298,7 @@ async function getUserAsJSObject(applicantForm, event) {
 
 /*
     *
-    * ----------------------------------- creating new user ----------------------------------
+    * ----------------------------------- creat new user ----------------------------------
     *
 */
 
