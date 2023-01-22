@@ -294,9 +294,7 @@ async function updateModal() {
 
 /*
     *
-    *
     * ----------------------------------- creating new user ----------------------------------
-    *
     *
 */
 
@@ -310,40 +308,19 @@ async function createUser() {
 
     async function handleFormSubmit(event) {
         event.preventDefault();
-        const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
+        const arrayOfSelects = getSelectValues(applicantForm.getElementsByTagName('select')[0])
 
-        let data1 = new FormData(event.target);
+        let formData = new FormData(event.target);
 
-        let value = Object.fromEntries(data1.entries());
+        let enteredData = Object.fromEntries(formData.entries());
 
-        await userPostOrPutRequest(value, selectedValues, 'POST')
-            .then(response => response.ok ? fillTable()
-                    .then(() => {
-                        const newUserTab = document.getElementById('nav-home-tab');
-                        console.log(newUserTab)
-                        newUserTab.click();
-                    })
-                    .then(() => alert('data changed successfully'))
-                : alert('Enter a correct data'))
+        let response = await userPostOrPutRequest(enteredData, arrayOfSelects, 'POST');
+        if (response.ok) {
+            await fillTable();
+            await document.getElementById('nav-home-tab').click()
+            alert('data changed successfully')
+        } else {
+            alert('Enter a correct data')
+        }
     }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

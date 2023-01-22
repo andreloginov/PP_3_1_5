@@ -39,9 +39,9 @@ public class RestUserController {
     }
 
     @PostMapping("/users")
-    EntityModel<User> addNewUser(@RequestBody User user) {
-        EntityModel<User> entityModel = assembler.toModel(userService.saveUser(user));
-        return entityModel;
+    ResponseEntity<User> addNewUser(@RequestBody User user) {
+        ResponseEntity<User> responseEntity = new ResponseEntity<>(userService.saveUser(user), HttpStatus.OK);
+        return responseEntity;
     }
 
     // Single item

@@ -73,6 +73,7 @@ public class UserService implements UserDetailsService {
 
         // если user's id null, то это новый user, соотв-но шифруем ноый пароль
         if (user.getId() == null) {
+            user.setPassword(user.getPasswordConfirm());
             user.setPassword(encoder.encode(user.getPassword()));
         } else {
             // update pass if its different
