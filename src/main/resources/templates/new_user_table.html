@@ -13,7 +13,7 @@
 
         <div class="col-4 offset-4 px-3">
 
-            <form class="text-center fw-bold needs-validation"  th:object="${employee}" th:action="@{/admin/employee-update}" method="post">
+            <form id="newUserForm" class="text-center fw-bold needs-validation"  th:object="${employee}" >
                 <input type="hidden" th:field="*{id}">
                 <div class="mb-3">
                     <label for="FirstName" class="form-label">First name</label>
@@ -45,7 +45,7 @@
                 <select class="form-select mb-3" th:size="${roleSet.size()}"
                         multiple aria-label="multiple select example" id="role" th:field="*{roles}" required>
                     <option th:each="role : ${roleSet}"
-                            th:value="${role.id}"
+                            th:value="${role.name}"
                             th:text="${role.name}">
                     </option>
                 </select>

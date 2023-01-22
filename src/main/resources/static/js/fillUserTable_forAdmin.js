@@ -65,7 +65,7 @@ async function deleteUserById(id) {
     alert(`Method deleteUserById with ID ${id} is already finished`);
 }
 
-async function userUpdateByBody(data, selectedValues) {
+async function userPostOrPutRequest(data, selectedValues, method) {
     let user = {
         id: data.id,
         name: data.name,
@@ -108,7 +108,7 @@ async function userUpdateByBody(data, selectedValues) {
     console.log('___________________')
 
     return await fetch('http://localhost:8080/api/users', {
-        method: 'PUT',
+        method: method == null ? 'PUT' : method,
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body: JSON.stringify(user)
     });
@@ -153,11 +153,11 @@ async function fillTable(data) {
 
 // all users display
 getArrayUsers()
-    .then(data => fillTable(data));
+    .then(data => fillTable(data)).then();
 
 
 // ----- перехватчик before starting modal для модального окна ----
-deleteModalCatcher().then(r => console.log('ff'));
+deleteModalCatcher().then(r => console.log('Delete script is successfully loaded'));
 
 async function deleteModalCatcher() {
     const exampleModal = document.getElementById('exampleModal')
@@ -236,7 +236,7 @@ async function deleteModalCatcher() {
     *
 */
 
-updateModal().then(r => console.log('update modal'));
+updateModal().then(r => console.log('Update modal is successfully loaded'));
 
 async function updateModal() {
     const roleArray = await getRoles();
@@ -281,7 +281,7 @@ async function updateModal() {
 
         let value = Object.fromEntries(data1.entries());
 
-        await userUpdateByBody(value, selectedValues)
+        await userPostOrPutRequest(value, selectedValues)
             .then(response => response.ok ? fillTable()
                     .then(() => closeModalWindow(updateModal))
                     .then(() => alert('data changed successfully'))
@@ -299,6 +299,37 @@ async function updateModal() {
     *
     *
 */
+
+createUser().then(r => alert(r));
+
+async function createUser() {
+    const applicantForm = document.getElementById('newUserForm');
+    applicantForm.addEventListener('submit', handleFormSubmit);
+
+    console.log('catch')
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+        const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
+
+        let data1 = new FormData(event.target);
+
+        let value = Object.fromEntries(data1.entries());
+
+        await userPostOrPutRequest(value, selectedValues, 'POST')
+            .then(response => response.ok ? fillTable()
+                    .then(() => {
+                        const newUserTab = document.getElementById('nav-home-tab');
+                        console.log(newUserTab)
+                        newUserTab.click();
+                    })
+                    .then(() => alert('data changed successfully'))
+                : alert('Enter a correct data'))
+    }
+
+
+
+}
 
 
 
