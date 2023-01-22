@@ -228,7 +228,13 @@ async function deleteModalCatcher() {
 }
 
 
-/* ---------------------------------- start the part of editing ---------------------------------*/
+/*
+    *
+    *
+    * ----------------------------------- editing an existing user ----------------------------------
+    *
+    *
+*/
 
 updateModal().then(r => console.log('update modal'));
 
@@ -258,7 +264,6 @@ async function updateModal() {
                     modalBodySelector.add(
                         new Option(option.name, option.name)
                     ));
-                roleArray.forEach(option => console.log(option))
             });
 
     })
@@ -272,19 +277,10 @@ async function updateModal() {
         event.preventDefault();
         const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
 
-        alert('pre auf')
         let data1 = new FormData(event.target);
 
-        console.log('-------------')
-        let words = ["apple", "ball", "cat"]
-        words.forEach(value1 => data1.append("roles[]", value1))
-        console.log(data1.getAll("roles[]"))
-        console.log('-------------')
-
         let value = Object.fromEntries(data1.entries());
-        alert('AUUUF')
-        console.log(data1)
-        console.log(value)
+
         await userUpdateByBody(value, selectedValues)
             .then(response => response.ok ? fillTable()
                     .then(() => closeModalWindow(updateModal))
@@ -294,6 +290,16 @@ async function updateModal() {
 }
 
 /* ---------------------------------- end the part of editing ---------------------------------*/
+
+
+/*
+    *
+    *
+    * ----------------------------------- creating new user ----------------------------------
+    *
+    *
+*/
+
 
 
 
