@@ -1,5 +1,3 @@
-let url = 'http://localhost:8080/api/users';
-
 async function getRoles() {
     const response = await fetch('http://localhost:8080/api/getRoles')
     if (response.ok) {
@@ -65,43 +63,7 @@ async function deleteUserById(id) {
     alert(`Method deleteUserById with ID ${id} is already finished`);
 }
 
-async function userPostOrPutRequest(data, selectedValues, method) {
-    let user = {
-        id: data.id,
-        name: data.name,
-        age: data.age,
-        surName: data.surName,
-        email: data.email,
-        password: data.password,
-        passwordConfirm: data.passwordConfirm,
-        roles: [
-            {
-                /*
-                    * ID 1 is an admin role
-                    * ID 2 is a user role
-                    * name will be undefined if it's unselected
-                */
-                "id": null,
-                "name": null,
-            },
-            {
-                "id": null,
-                "name": null,
-            }
-        ]
-    }
-    if (selectedValues.length > 1) {
-        user.roles[0].id = 1;
-        user.roles[0].name = selectedValues[0];
-
-        user.roles[1].id = 2;
-        user.roles[1].name = selectedValues[1];
-    } else if (selectedValues.length === 1) {
-        user.roles[0].id = selectedValues[0] === "ROLE_ADMIN" ? 1 : 2;
-        user.roles[0].name = selectedValues[0];
-        user.roles.pop();
-    }
-
+async function userPostOrPutRequest(user, method) {
 
     console.log('user.roles:')
     console.log(user)
@@ -275,13 +237,9 @@ async function updateModal() {
 
     async function handleFormSubmit(event) {
         event.preventDefault();
-        const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
+        let user = await getUserAsJSObject(applicantForm, event);
 
-        let data1 = new FormData(event.target);
-
-        let value = Object.fromEntries(data1.entries());
-
-        await userPostOrPutRequest(value, selectedValues)
+        await userPostOrPutRequest(user)
             .then(response => response.ok ? fillTable()
                     .then(() => closeModalWindow(updateModal))
                     .then(() => alert('data changed successfully'))
@@ -289,8 +247,58 @@ async function updateModal() {
     }
 }
 
-/* ---------------------------------- end the part of editing ---------------------------------*/
+/*
+    *
+    *
+    * ----------------------------------- end of editing an existing user ----------------------------------
+    *
+    *
+*/
 
+async function getUserAsJSObject(applicantForm, event) {
+
+    const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
+    let formData = new FormData(event.target);
+    let data = Object.fromEntries(formData.entries());
+
+    let user = {
+        id: data.id,
+        name: data.name,
+        age: data.age,
+        surName: data.surName,
+        email: data.email,
+        password: data.password,
+        passwordConfirm: data.passwordConfirm,
+        roles: [
+            {
+                /*
+                    * ID 1 is an admin role
+                    * ID 2 is a user role
+                    * name will be undefined if it's unselected
+                */
+                "id": null,
+                "name": null,
+            },
+            {
+                "id": null,
+                "name": null,
+            }
+        ]
+    }
+    if (selectedValues.length > 1) {
+        user.roles[0].id = 1;
+        user.roles[0].name = selectedValues[0];
+
+        user.roles[1].id = 2;
+        user.roles[1].name = selectedValues[1];
+    } else if (selectedValues.length === 1) {
+        user.roles[0].id = selectedValues[0] === "ROLE_ADMIN" ? 1 : 2;
+        user.roles[0].name = selectedValues[0];
+        user.roles.pop();
+    }
+
+    return user;
+}
 
 /*
     *
@@ -304,21 +312,15 @@ async function createUser() {
     const applicantForm = document.getElementById('newUserForm');
     applicantForm.addEventListener('submit', handleFormSubmit);
 
-    console.log('catch')
-
     async function handleFormSubmit(event) {
         event.preventDefault();
-        const arrayOfSelects = getSelectValues(applicantForm.getElementsByTagName('select')[0])
-
-        let formData = new FormData(event.target);
-
-        let enteredData = Object.fromEntries(formData.entries());
-
-        let response = await userPostOrPutRequest(enteredData, arrayOfSelects, 'POST');
+        let user = await getUserAsJSObject(applicantForm, event);
+        alert('got')
+        let response = await userPostOrPutRequest(user, 'POST');
         if (response.ok) {
             await fillTable();
             await document.getElementById('nav-home-tab').click()
-            alert('data changed successfully')
+            alert('New user is saved')
         } else {
             alert('Enter a correct data')
         }
