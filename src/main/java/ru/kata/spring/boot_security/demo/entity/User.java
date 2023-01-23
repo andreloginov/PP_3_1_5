@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -169,11 +172,45 @@ public class User implements UserDetails {
 
     // using to display formatted roles (like 'USER, ADMIN') without a prefix ROLE_
     public String getPureRoles() {
+
         StringBuilder stringBuilder = new StringBuilder();
         String subStringToDelete = "ROLE_";
         roles.forEach(role -> stringBuilder.append(role.getName().substring(subStringToDelete.length())).append(", "));
-        /*roles.forEach(role -> stringBuilder.append(role.getName()).append(", "));*/
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
+
         return stringBuilder.toString();
+    }
+
+    public boolean deleteSingleRoleFromRoles(String role) {
+        return roles.removeIf(currentRole -> currentRole.getName().contains(role));
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(surName, user.surName) && Objects.equals(email, user.email) && Objects.equals(age, user.age) && Objects.equals(password, user.password) && Objects.equals(passwordConfirm, user.passwordConfirm) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surName, email, age, password, passwordConfirm, roles);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surName='" + surName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", password='" + password + '\'' +
+                ", passwordConfirm='" + passwordConfirm + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

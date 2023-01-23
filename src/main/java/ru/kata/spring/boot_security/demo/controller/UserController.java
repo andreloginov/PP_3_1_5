@@ -25,6 +25,7 @@ public class UserController {
         User user = (User) userService.loadUserByUsername(authentication.getName());
         model.addAttribute("employees", user);
 
+
         return "user";
     }
 

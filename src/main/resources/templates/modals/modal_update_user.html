@@ -4,79 +4,66 @@
 
 <body>
 <div th:fragment="copy">
-    <div class="modal fade" th:attr="id=${employee.id}" tabindex="-1" aria-labelledby="edit" aria-hidden="true" >
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form class="text-center fw-bold" th:object="${employee}" th:action="@{/admin/employee-update}"
-                      th:method="PATCH" th:id="${employee.id}">
-
+                <form id="userFormUpdate" class="text-center fw-bold">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="e">Edit user</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <div class="modal-body col-6 offset-3">
+                            <div class="mb-3">
+                                <label for="notEdit">ID</label>
+                                <input class="form-control" disabled type="text" name="idShow" id="notEdit">
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" readonly type="hidden" name="id" id="transmissionToJS">
+                            </div>
 
-                    <div class="modal-body col-6 offset-3">
-                        <div class="mb-3">
-                            <label for="idEditUser"><strong>ID</strong></label>
-                            <input class="form-control" type="text" th:value="${employee.id}" disabled>
-                            <input class="form-control" type="hidden" readonly th:value="${employee.id}" name="id"
-                                   id="idEditUser">
+                            <div class="mb-3">
+                                <label for="nameEditUser" class="form-label">First name</label>
+                                <input class="form-control" type="text" name="name" id="nameEditUser">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="surNameEditUser" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="surNameEditUser" name="surName">
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="ageEditUser" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="ageEditUser" name="age">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="emailEditUser" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailEditUser" name="email">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="passwordConfirmEditUser" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordConfirmEditUser"
+                                       name="passwordConfirm">
+                            </div>
+
+                            <div>
+                                <input type="hidden" class="form-control" readonly id="passwordEditUser"
+                                       name="password">
+                            </div>
+
+                            <label for="roleEditUser1" class="form-label">Role</label>
+                            <select class="form-select mb-3" size="2" aria-label="size 2 select example"
+                                    id="roleEditUser1" multiple  name="roles">
+                            </select>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="nameEditUser" class="form-label">First name</label>
-                            <input class="form-control" type="text" th:value="${employee.name}" name="name"
-                                   id="nameEditUser" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="surNameEditUser" class="form-label">Last name</label>
-                            <input type="text" class="form-control" id="surNameEditUser" th:value="${employee.surName}"
-                                   name="surName" required>
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="ageEditUser" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="ageEditUser" th:value="${employee.age}"
-                                   name="age" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="emailEditUser" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailEditUser" th:value="*{email}"
-                                   name="email" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="passwordConfirmEditUser" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="passwordConfirmEditUser"
-                                   th:value="${employee.passwordConfirm}" name="passwordConfirm">
-                        </div>
-
-                        <div>
-                            <label for="passwordEditUser" class="form-label"></label>
-                            <input type="hidden" class="form-control" readonly th:value="*{password}"
-                                   id="passwordEditUser" name="password">
-                        </div>
-
-                        <label for="roleEditUser" class="form-label">Role</label>
-                        <select class="form-select mb-3" th:size="${roleSet.size()}" aria-label="size 2 select example"
-                                id="roleEditUser" th:value="${employee.roles}" name="roles" required>
-                            <option th:each="role : ${roleSet}"
-                                    th:value="${role.id}"
-                                    th:text="${role.name}">
-                            </option>
-                        </select>
                     </div>
-
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="submit" class="btn btn-primary">Edit
-                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>
