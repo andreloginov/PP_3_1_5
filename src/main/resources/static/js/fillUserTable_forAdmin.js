@@ -2,7 +2,6 @@ async function getRoles() {
     const response = await fetch('http://localhost:8080/api/getRoles')
     if (response.ok) {
         let data = await response.json();
-        console.log(data)
         return data;
     } else {
         alert(`Error to get the role list. Status: ${response.status}`)
@@ -22,8 +21,6 @@ function getSelectValues(select) {
             result.push(opt.value || opt.text);
         }
     }
-    console.log('Selected values:')
-    console.log(result)
     return result;
 }
 
@@ -35,8 +32,8 @@ async function closeModalWindow(updateModal) {
     }, {once:true});
 }
 
-/*-------------- start user service ----------------------  */
-// ----- here we interact with the database -------------
+/*-------------- (start) user service ----------------------  */
+// ----- we interact with the database by using fetch requests-------------
 
 async function getArrayUsers() {
     let response = await fetch('http://localhost:8080/api/users');
@@ -65,10 +62,6 @@ async function deleteUserById(id) {
 
 async function userPostOrPutRequest(user, method) {
 
-    console.log('user.roles:')
-    console.log(user)
-    console.log('___________________')
-
     return await fetch('http://localhost:8080/api/users', {
         method: method == null ? 'PUT' : method,
         headers: {'Content-Type': 'application/json;charset=utf-8'},
@@ -79,7 +72,10 @@ async function userPostOrPutRequest(user, method) {
 /*-------------- end user service ----------------------  */
 
 
-async function fillTable(data) {
+async function fillTable() {
+    let data = await fetch('http://localhost:8080/api/users')
+        .then(response => response.json());
+
     if (data == null) {
         data = await getArrayUsers()
     }
@@ -116,6 +112,7 @@ async function fillTable(data) {
 // display users array
 getArrayUsers()
     .then(data => fillTable(data)).then();
+fillTable().then(() => console.log('User table loaded'))
 
 
 /*
@@ -123,18 +120,16 @@ getArrayUsers()
     * -----------------------------------(start) delete user ----------------------------------
     *
 */
-deleteModalCatcher().then(r => console.log('Delete script is successfully loaded'));
-/*
-    *
-    * -----------------------------------(end) delete user ----------------------------------
-    *
-*/
+deleteModalCatcher().then(r => console.log('Delete script loaded'));
+
 async function deleteModalCatcher() {
     const exampleModal = document.getElementById('exampleModal')
-    alert(exampleModal)
+
     exampleModal.addEventListener('show.bs.modal', event => {
+
         // button that triggered the modal
         const button = event.relatedTarget
+
         // extract info from data-bs* attributes
         const recipient = button.getAttribute('data-bs-whatever')
 
@@ -167,18 +162,17 @@ async function deleteModalCatcher() {
     applicantForm.addEventListener('submit', handleFormSubmit);
 
     async function handleFormSubmit(event) {
-        console.log('Entered in the function handle')
-        console.log(applicantForm)
+
         event.preventDefault();
+
         let user = await getUserAsJSObject(applicantForm, event);
 
-
         let response = await deleteUserById(user.id);
-        console.log(user)
 
         if (response.ok) {
             await closeModalWindow(exampleModal);
             await fillTable();
+            alert(`User with ID ${user.id} deleted`)
         } else {
             alert('Enter correct data');
         }
@@ -186,11 +180,17 @@ async function deleteModalCatcher() {
 }
 /*
     *
+    * -----------------------------------(end) delete user ----------------------------------
+    *
+*/
+
+/*
+    *
     * -----------------------------------(start) edit an existing user ----------------------------------
     *
 */
 
-updateModal().then(r => console.log('Update modal is successfully loaded'));
+updateModal().then(() => console.log('Update script loaded'));
 
 async function updateModal() {
     const roleArray = await getRoles();
@@ -220,9 +220,7 @@ async function updateModal() {
                             new Option(option.name, option.name)
                         ));
                 }
-
             });
-
     })
 
     // --- перехватчик для кнопки submit ---
@@ -237,26 +235,24 @@ async function updateModal() {
         await userPostOrPutRequest(user)
             .then(response => response.ok ? fillTable()
                     .then(() => closeModalWindow(updateModal))
-                    .then(() => alert('data changed successfully'))
+                    .then(() => alert('Data changed successfully'))
                 : alert('Enter a correct data'))
     }
 }
-
 /*
     *
     * -----------------------------------(end) edit an existing user ----------------------------------
     *
 */
 
+// this function returns user js object with array of roles.
 
 async function getUserAsJSObject(applicantForm, event) {
 
     const selectedValues = getSelectValues(applicantForm.getElementsByTagName('select')[0])
     let formData = new FormData(event.target);
     let data = Object.fromEntries(formData.entries());
-    console.log('getUserAsJSObject()')
-    console.log(formData)
-    console.log(data)
+
     let user = {
         id: data.id,
         name: data.name,
@@ -302,23 +298,23 @@ async function getUserAsJSObject(applicantForm, event) {
     *
 */
 
-createUser().then(r => alert(r));
+createUser().then(() => console.log('Create script loaded'));
 
 async function createUser() {
     const applicantForm = document.getElementById('newUserForm');
     applicantForm.addEventListener('submit', handleFormSubmit);
 
-    console.log(applicantForm)
 
     async function handleFormSubmit(event) {
+
         event.preventDefault();
         let user = await getUserAsJSObject(applicantForm, event);
-        alert('got')
+
         let response = await userPostOrPutRequest(user, 'POST');
         if (response.ok) {
             await fillTable();
             await document.getElementById('nav-home-tab').click()
-            alert('User saved')
+                    alert(`User with ID: ${user.id} saved`)
         } else {
             alert('Enter correct data')
         }
