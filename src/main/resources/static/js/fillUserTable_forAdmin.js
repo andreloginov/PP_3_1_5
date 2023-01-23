@@ -14,7 +14,7 @@ function getSelectValues(select) {
     let options = select && select.options;
     let opt;
 
-    for (let i = 0, iLen=options.length; i < iLen; i++) {
+    for (let i = 0, iLen = options.length; i < iLen; i++) {
         opt = options[i];
 
         if (opt.selected) {
@@ -29,10 +29,11 @@ async function closeModalWindow(updateModal) {
     modal.hide();
     updateModal.addEventListener('hidden.bs.modal', () => {
         modal.dispose();
-    }, {once:true});
+    }, {once: true});
 }
 
 /*-------------- (start) user service ----------------------  */
+
 // ----- we interact with the database by using fetch requests-------------
 
 async function getArrayUsers() {
@@ -108,7 +109,6 @@ async function fillTable() {
 }
 
 
-
 // display users array
 getArrayUsers()
     .then(data => fillTable(data)).then();
@@ -178,6 +178,7 @@ async function deleteModalCatcher() {
         }
     }
 }
+
 /*
     *
     * -----------------------------------(end) delete user ----------------------------------
@@ -239,6 +240,7 @@ async function updateModal() {
                 : alert('Enter a correct data'))
     }
 }
+
 /*
     *
     * -----------------------------------(end) edit an existing user ----------------------------------
@@ -314,7 +316,7 @@ async function createUser() {
         if (response.ok) {
             await fillTable();
             await document.getElementById('nav-home-tab').click()
-                    alert(`User with ID: ${user.id} saved`)
+            alert(`User with name ${user.name} saved`)
         } else {
             alert('Enter correct data')
         }

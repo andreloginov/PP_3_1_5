@@ -11,125 +11,51 @@
 </head>
 <body>
 <div th:each="employee : ${employee}">
-<form action="#" th:action="@{/admin/employee-update}" th:object="${employee}" method="post">
+    <form action="#" th:action="@{/admin/employee-update}" th:object="${employee}" method="post">
 
-    <input type="hidden" th:field="*{id}">
-    <br><br>
+        <input type="hidden" th:field="*{id}">
+        <br><br>
 
-    <label for="firstName">First name</label>
-    <input type="text" th:field="*{name}" id="firstName" placeholder="Write first name">
-    <span style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="error"></span>
+        <label for="firstName">First name</label>
+        <input type="text" th:field="*{name}" id="firstName" placeholder="Write first name">
+        <span style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="error"></span>
 
-    <br><br>
+        <br><br>
 
-    <label for="surName">Surname</label>
-    <input type="text" th:field="*{surName}" id="surName" placeholder="Write surname">
-    <div style="color:red" th:if="${#fields.hasErrors('surName')}" th:errors="*{surName}" class="italic">Error</div>
-    <br><br>
+        <label for="surName">Surname</label>
+        <input type="text" th:field="*{surName}" id="surName" placeholder="Write surname">
+        <div style="color:red" th:if="${#fields.hasErrors('surName')}" th:errors="*{surName}" class="italic">Error</div>
+        <br><br>
 
-    <label for="department">Department</label>
-    <input type="text" th:field="*{email}" id="department" placeholder="Write department">
-    <span style="color:red" th:if="${#fields.hasErrors('department')}" th:errors="*{email}">Error</span>
-    <br><br>
+        <label for="department">Department</label>
+        <input type="text" th:field="*{email}" id="department" placeholder="Write department">
+        <span style="color:red" th:if="${#fields.hasErrors('department')}" th:errors="*{email}">Error</span>
+        <br><br>
 
-    <label for="salary">Salary</label>
-    <input type="text" th:field="*{age}" id="salary" placeholder="Write salary">
-    <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{age}">Error</span>
-    <br><br>
+        <label for="salary">Salary</label>
+        <input type="text" th:field="*{age}" id="salary" placeholder="Write salary">
+        <span style="color:red" th:if="${#fields.hasErrors('salary')}" th:errors="*{age}">Error</span>
+        <br><br>
 
-    <label for="password">Password</label>
-    <input type="password" th:field="*{passwordConfirm}" id="password" placeholder="Write password">
-    <span style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
-    <input type="hidden" th:field="*{password}">
-    <br><br>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{passwordConfirm}" id="password" placeholder="Write password">
+        <span style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
+        <input type="hidden" th:field="*{password}">
+        <br><br>
 
-    <div>
-        <div th:each="role : ${roleSet}">
-            <input type="radio" th:field="*{roles}" th:value="${role.id}"/>
-            <label th:text="${role.name}">Something is wrong!</label>
-        </div>
-        <span style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Error</span>
-    </div>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <form class="row g-3 needs-validation" novalidate>
-                    <div class="col-md-4">
-                        <label for="validationCustom01" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="validationCustom01" value="Mark" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="validationCustom02" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="validationCustom02" value="Otto" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="validationCustomUsername" class="form-label">Username</label>
-                        <div class="input-group has-validation">
-                            <span class="input-group-text" id="inputGroupPrepend">@</span>
-                            <input type="text" class="form-control" id="validationCustomUsername"
-                                   aria-describedby="inputGroupPrepend" required>
-                            <div class="invalid-feedback">
-                                Please choose a username.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="validationCustom03" class="form-label">City</label>
-                        <input type="text" class="form-control" id="validationCustom03" required>
-                        <div class="invalid-feedback">
-                            Please provide a valid city.
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="validationCustom04" class="form-label">State</label>
-                        <select class="form-select" id="validationCustom04" required>
-                            <option selected disabled value="">Choose...</option>
-                            <option>...</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Please select a valid state.
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="validationCustom05" class="form-label">Zip</label>
-                        <input type="text" class="form-control" id="validationCustom05" required>
-                        <div class="invalid-feedback">
-                            Please provide a valid zip.
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                            <label class="form-check-label" for="invalidCheck">
-                                Agree to terms and conditions
-                            </label>
-                            <div class="invalid-feedback">
-                                You must agree before submitting.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <button class="btn btn-primary" type="submit">Submit form</button>
-                    </div>
-                </form>
-
+        <div>
+            <div th:each="role : ${roleSet}">
+                <input type="radio" th:field="*{roles}" th:value="${role.id}"/>
+                <label th:text="${role.name}">Something is wrong!</label>
             </div>
+            <span style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Error</span>
         </div>
-    </div>
 
 
-    <br><br>
-    <input type="submit" value="Update">
-    <button type="submit">Submit</button>
-</form>
+
+        <input type="submit" value="Update">
+        <button type="submit">Submit</button>
+    </form>
 </div>
 
 
@@ -138,4 +64,3 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 </body>
-</html>

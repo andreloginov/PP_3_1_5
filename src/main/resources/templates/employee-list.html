@@ -12,9 +12,9 @@
 
 
 
-<!--xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" **********************************************th:text="${#authorization.authentication.getAuthorities()}"********************************************************* -->
+<!-- ****************************************************************************************************** -->
 <header>
-    <div th:insert="header :: copy"></div>
+    <div th:insert="/fragments/header :: copy"></div>
 </header>
 <!-- ******************************************************************************************************* -->
 
@@ -42,11 +42,11 @@
                     <div class="tab-content" id="nav-tabContent">
                         <!-- this tab contains editing and deleting a user-->
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <div th:insert="all_users_table :: copy"></div>
+                            <div th:insert="/fragments/all_users_table :: copy"></div>
                         </div>
                         <!-- table of new user -->
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <div th:insert="new_user_table :: copy"></div>
+                            <div th:insert="/fragments/new_user_table :: copy"></div>
                         </div>
                     </div>
                 </div>
@@ -58,11 +58,9 @@
 
 
 
-<!-- ******************************************************************************************************* -->
-<!-- ******************************************************************************************************* -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-
-
 <script src="/js/fillUserTable_forAdmin.js"></script>
+
 </body>
 </html>

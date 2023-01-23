@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.aspectj.weaver.ast.FieldGet;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +15,8 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {

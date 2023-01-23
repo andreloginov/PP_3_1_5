@@ -10,10 +10,7 @@ import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -45,7 +42,6 @@ public class RestUserController {
     }
 
     // Single item
-
     @GetMapping("/users/{id}")
     EntityModel<User> getSingleUser(@PathVariable Integer id) {
 

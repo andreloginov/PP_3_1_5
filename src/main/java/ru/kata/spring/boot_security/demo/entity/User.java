@@ -172,11 +172,12 @@ public class User implements UserDetails {
 
     // using to display formatted roles (like 'USER, ADMIN') without a prefix ROLE_
     public String getPureRoles() {
+
         StringBuilder stringBuilder = new StringBuilder();
         String subStringToDelete = "ROLE_";
         roles.forEach(role -> stringBuilder.append(role.getName().substring(subStringToDelete.length())).append(", "));
-        /*roles.forEach(role -> stringBuilder.append(role.getName()).append(", "));*/
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
+
         return stringBuilder.toString();
     }
 
@@ -184,20 +185,6 @@ public class User implements UserDetails {
         return roles.removeIf(currentRole -> currentRole.getName().contains(role));
     }
 
-    public boolean clearNullRoleByName() {
-        /*setRoles(roles.stream().filter(role -> {
-            if (role.getName().contains("ADMIN")) {
-                role.setId(1);
-                return false;
-            } else if (role.getName().contains("USER")) {
-                role.setId(2);
-                return false;
-            } else {
-                return true;
-            }
-        }).collect(Collectors.toSet()));*/
-        return true;
-    }
 
 
     @Override
